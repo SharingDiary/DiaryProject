@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>일기 작성</title>
+
+    <style>
+        header{
+            width: 100%;
+            height: 80px;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFEC86;
+            font-weight: bold;
+        }
+
+        header h1{
+            width: 300px;
+            margin-left: 20px;
+        }
+
+        #main_nav{
+            width: 600px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #main_nav a{
+            font-size: x-large;
+            color: #666;
+            text-decoration: none;
+        }
+
+        #sub_nav{
+            width: 300px;
+            display: block;
+            margin-right: 50px;
+        }
+
+        #sub_nav a{
+            float: right;
+            margin-left: 30px;
+            font-size: small;
+            color: #444;
+            text-decoration: none;
+        }
+
+        body {
+            margin: 0 auto;
+            padding-top: 80px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #wrapper{
+            min-height: 100%;
+            margin: 0 auto;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            background:lightyellow;
+        }
+
+        #title {
+            margin-top: 40px;
+        }
+
+        #top_div{
+            width: 80%;
+            height: 80px;
+            margin: auto;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #top_div .top_div_left{
+            width: 70%;
+            height: 100%;
+        }
+
+        #top_div .top_div_right{
+            width: 30%;
+            height: 100%;
+        }
+
+        #top_div .top_div_left h4{
+            height: 20px;
+            margin: auto;
+            margin-top: 10px;
+            margin-left: 15px;
+            float: left;
+        }
+
+        #top_div .top_div_left input{
+            width: 90%;
+            height: 30px;
+            margin: auto;
+            margin-top: 5px;
+            margin-left: 10px;
+            padding-left: 10px;
+            float: left;
+            border: lightgray solid 1px;
+            border-radius: 10px;
+        }
+
+        #top_div .top_div_right h4{
+            height: 20px;
+            margin: auto;
+            margin-top: 10px;
+            margin-left: 15px;
+            float: left;
+        }
+
+        #top_div .top_div_right .weather{
+            width: 90%;
+            height: 30px;
+            margin: auto;
+            margin-top: 5px;
+            margin-left: 10px;
+            float: left;
+            border: lightgray solid 1px;
+            border-radius: 10px;
+            background: white;
+        }
+
+        #top_div .top_div_right .weather button{
+            width: 30px;
+            height: 30px;
+            margin: 0 auto;
+            font-size: large;
+            background: none;
+            border: transparent solid 2px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        #top_div .top_div_right .weather button:focus {
+            border-radius: 15px;
+            border: red solid 2px;
+        }
+
+        #middle_div{
+            width: 80%;
+            height: 500px;
+            margin: auto;
+            margin-top: 30px;
+            display: block;
+            justify-content: start;
+        }
+
+        #middle_div h4{
+            height: 20px;
+            margin: auto;
+            margin-top: 10px;
+            margin-left: 15px;
+            float: left;
+        }
+
+        #middle_div textarea{
+            width: 93%;
+            height: 80%;
+            margin: auto;
+            margin-top: 5px;
+            margin-left: 10px;
+            padding: 10px;
+            float: left;
+            border: lightgray solid 1px;
+            border-radius: 10px;
+            text-align:start;
+        }
+
+        #bottom_div{
+            width: 80%;
+            height: 60px;
+            margin: auto;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        #bottom_div button {
+            width: 100px;
+            height: 60px;
+            margin: auto;
+            background: lightgray;
+            border-radius: 10px;
+            font-size: x-large;
+            border: 0;
+        }
+
+        #bottom_div button:hover {
+            color: white;
+            box-shadow: #3CB371 0 0px 0px 40px inset;
+        }
+
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>📝 Daily Share</h1>
+
+        <nav id="main_nav">
+            <a href="/new.html">NEW</a>
+            <a href="group.html">내 그룹</a>
+            <a href="/community">커뮤니티</a>
+            <a href="/create_group">그룹생성</a>
+        </nav>
+
+        <nav id="sub_nav">
+            <a href="/signup">회원가입</a>
+            <a href="/signin">로그인</a>
+        </nav>
+    </header>
+
+    <body>
+        <div id="wrapper">
+            <h2 id="title">일기 작성</h2>
+            <div id="top_div">
+                <div class="top_div_left">
+                    <h4>제목</h4>
+                    <input type="" name="title" placeholder="일기 제목을 입력해주세요.">
+                </div>
+                <div class="top_div_right">
+                    <h4>오늘의 날씨</h4>
+                    <div class="weather">
+                        <button>☀️</button>
+                        <button>🌥</button>
+                        <button>🌧</button>
+                        <button>⛈</button>
+                        <button>🌨</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="middle_div">
+                <h4>내용</h4>
+                <textarea name="content" placeholder="내용을 입력해주세요."></textarea>
+            </div>
+
+            <div id="bottom_div">
+                <button>
+                    완료
+                </button>
+            </div>
+        </div>
+    </body>
+<script>
+</script>
+
+</body>
+</html>

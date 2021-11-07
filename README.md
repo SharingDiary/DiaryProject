@@ -1,1 +1,1 @@
-Shary: 온라인 교환일기 서비스
+Shary(Sharing Diary): 온라인 교환일기 서비스
