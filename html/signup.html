@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Document</title>
+  <style>
+
+* {
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+    header{
+            width: 100%;
+            height: 80px;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFEC86;
+            font-weight: bold;
+        }
+
+      header h1{
+           width: 300px;
+           margin-left: 20px;
+      }
+
+    #main_nav{
+            width: 600px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #main_nav a{
+            font-size: x-large;
+            color: #666;
+            text-decoration: none;
+        }
+
+        #sub_nav{
+            width: 300px;
+            display: block;
+            margin-right: 50px;
+        }
+
+        #sub_nav a{
+            float: right;
+            margin-left: 30px;
+            font-size: small;
+            color: #444;
+            text-decoration: none;
+        }
+
+        h2{
+          text-align: center;
+        }
+
+
+        .login-form {
+        background-color: #FAF6E7;
+        padding : 20px;
+        border-radius: 5px;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 120px;
+        
+      
+      }
+
+      .login-form b{
+        width : 120px;
+      float : left;
+      }
+
+      .text-field {
+        font-size: 14px;
+        border : none;
+        margin-bottom: 5px;
+        margin-right: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        width: 50%;
+        
+      }
+
+      .info {
+        margin-left: 20px;
+      }
+
+      .info-one{
+        margin-top: 10px;
+      }
+
+      #id-btn{
+        font-size: 14px;
+        font-weight: 700;
+        background-color: #FFEE97;
+        border-radius: 5px;
+        color: black;
+        border: none;
+        padding: 10px;
+      }
+
+      .sign-btn {
+        font-size: 17px;
+        background-color: #FFEE97;
+        color: black;
+        border: none;
+        padding: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-weight: bolder;
+        text-align: center;
+        width:300px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .links {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+  </style>
+
+</head>
+<body>
+  <header>
+    <h1>📝 Shary</h1>
+
+    <nav id="main_nav">
+        <a href="/new">NEW</a>
+        <a href="/group">내 그룹</a>
+        <a href="/community">커뮤니티</a>
+        <a href="/create_group">그룹생성</a>
+    </nav>
+
+    <nav id="sub_nav">
+        <a href="./signup.html">회원가입</a>
+        <a href="./login.html">로그인</a>
+    </nav>
+</header>
+<body>
+  <div class="login-form">
+    <form>
+      <h2>회원가입</h2>
+      <div class="info">
+      <h4>내 정보 입력</h4>
+      <div class="info-one">
+      <b>닉네임</b> <input type="text" name="nickname" class="text-field"> <br>
+      </div>
+      <div class="info-one">
+      <b>아이디</b><input type="text" name="email" class="text-field">
+      <input type="button" value="중복 확인" id="id-btn"> <br>
+      </div>
+      <div class="info-one">
+      <b>비밀번호</b>
+      <input type="password" name="password" class="text-field"> <br>
+      </div>
+      <div class="info-one"></div>
+      <b>비밀번호 확인</b>
+      <input type="password" name="repassword" class="text-field"> <br>
+      </div>
+      <input type="submit" value="Sign Up" class="sign-btn">
+      
+    </div>
+    </form>
+  </div>
+
+</body>
+</body>
+</html>
