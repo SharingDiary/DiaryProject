@@ -60,6 +60,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            background: rgb(250, 243, 214);
         }
 
         #wrapper{
@@ -73,6 +74,41 @@
 
         #title {
             margin-top: 40px;
+        }
+
+        #name_wrapper{
+            margin-top: 50px;
+            margin-right: 100px;
+            width: 300px;
+            height: 500px;
+            background: rgb(197, 217, 248);
+        }
+
+        .text_center{
+            text-align: center;
+        }
+
+        #mydiary_wrapper{
+            width: 1000px;
+            min-height: 100%;
+            background: white;
+        }
+
+        #mydiary_day{
+            white-space:nowrap; 
+            overflow-x: auto;
+        }
+
+        #mydiary_day h3{
+            margin-left: 50px;
+        }
+
+        .mydiary_content{
+            background: #FFEC86;
+            width: 300px;
+            height: 400px;
+            margin: auto 50px;
+            float: left;
         }
 
     </style>
@@ -90,16 +126,51 @@
         </nav>
 
         <nav id="sub_nav">
-            <a href="/signup">회원가입</a>
-            <a href="/signin">로그인</a>
+            <a href="/logout">로그아웃</a>
+            <a href="/mypage">마이</a>
         </nav>
     </header>
 
     <body>
-        <div id="wrapper">
-            
+        <div id="name_wrapper" class="text_center">
+            <h4>닉네임 <button>수정버튼</button></h4>
+            <p>ID: sdfasd33</p>
+            <p>일기 쓰는 것을 좋아해요</p>
         </div>
 
+        <div>
+            <h2>내가 쓴 일기</h2>
+            <div id="mydiary_wrapper">
+                <div id="mydiary_day">
+                    <h3>2021/10/05</h3>
+                    <div class="mydiary_content text_center">
+                        <h4>고기 먹은 날</h4>
+                        <p>오늘은 고기를 먹었다. 정말 맛있었다</p>
+                    </div>
+                    <div class="mydiary_content text_center">
+                        <h4>고기 먹은 날</h4>
+                        <p>오늘은 고기를 먹었다. 정말 맛있었다</p>
+                    </div>
+                </div>
+                <hr>
+                <div id="mydiary_day">
+                    <h3>2021/10/04</h3>
+                    <div class="mydiary_content text_center">
+                        <h4>고기 먹은 날</h4>
+                        <p>오늘은 고기를 먹었다. 정말 맛있었다</p>
+                    </div>
+                </div>
+                <hr>
+                <div id="mydiary_day">
+                    <h3>2021/10/03</h3>
+                    <div class="mydiary_content text_center">
+                        <h4>고기 먹은 날</h4>
+                        <p>오늘은 고기를 먹었다. 정말 맛있었다</p>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
     </body>
     
 <script>
