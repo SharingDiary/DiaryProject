@@ -2,12 +2,31 @@
 
 .group-container {width:100%; height: 100%;}
 .group-bar { margin: 10px;}
-.group-desc { width: auto; height: auto; background: #FFEC86; border-radius: 5px; align-content: center; cursor: pointer;}
+.group-desc { width: auto; height: auto; background: #FFEC86; border-radius: 5px; align-content: center;}
 .group-title { display: inline-flex; float: left; font-weight: 700; }
 .group-people {float: right;}
 .group-how-many { display: inline-flex;}
 .group-number-of-people { display: inline-flex;}
 
-.group-main-desc {width: auto; height: 50px;  padding: 0 20px;}
-.group-more-desc {width: auto; height: 100px; background: white; display: none;}
-.group-intro-writing {margin: 0;}
+.group-main-desc {width: auto; height: 50px;  padding: 0 20px; cursor: pointer;}
+.group-more-desc {width: auto; height: auto; padding: 20px; background: white; display: none;}
+.group-writing-wrap {width: 80%; text-align: left; margin: 0 auto;}
+.group-writing {margin: 0;}
+
+.group-master-profile {height: 50px; }
+.group-profile { height: auto; float: left; display: inline-flex;}
+.profile-photo { width:45px; height: 45px; background: gray; border-radius: 25px;} 
+.profile-nickname {margin: auto 0 auto 10px ;}
+.profile-nickname p {margin: 0;}
+
+.group-reply-container {height: auto; margin-top: 10px;}
+.group-reply {height: auto; background: lightyellow; padding: 10px 20px; margin-top:20px;}
+.group-reply-inside {margin: 0;}
+.group-reply-profile { height: 50px; }
+.group-reply-wrap { margin-top: 2px; margin-left:10px;}
+.reply-profile{ cursor: pointer;}
+
+.group-reply-popup {background:#FFEC86; width:220px; height:auto; padding: 10px; position:absolute; 
+    display: none; border: 1px solid white;}
+.group-invitation-btn {background: #FDD713; padding:10px;}
+.group-invitation-btn p {color: white; margin:0;}
