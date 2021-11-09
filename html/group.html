@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Base.html">
+    <meta name="author" content="데베플 3팀">
+
+    <title>그룹</title>
+
+    <style>
+        header{
+            width: 100%;
+            height: 80px;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFEC86;
+            font-weight: bold;
+        }
+
+        header h1{
+            width: 300px;
+            margin-left: 20px;
+        }
+
+        #main_nav{
+            width: 600px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #main_nav a{
+            font-size: x-large;
+            color: #666;
+            text-decoration: none;
+        }
+
+        #main_nav_here a{
+            font-size: x-large;
+            color: #000;
+            text-decoration: none;
+        }
+        
+
+        #sub_nav{
+            width: 300px;
+            display: block;
+            margin-right: 50px;
+        }
+
+        #sub_nav a{
+            float: right;
+            margin-left: 30px;
+            font-size: small;
+            color: #444;
+            text-decoration: none;
+        }
+
+        body {
+            margin: 0 auto;
+            padding-top: 80px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #wrapper{
+            min-height: 100%;
+            margin: 0 auto;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            background:lightyellow;
+        }
+
+        #title_div {
+            width: 90%;
+            height: 30px;
+            margin: auto;
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #title_div .title_div_left h2 {
+            height: 40px;
+            margin: auto;
+            margin-top: 10px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        #title_div .title_div_left button{
+            width: 10px;
+            height: 10px;
+            margin: 0 auto;
+            margin-top: 10px;
+            font-size: large;
+            background: none;
+            border: transparent solid 2px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        #title_div .title_div_left button:focus {
+            border: 0;
+            outline: 0;
+        }
+
+        #bottom_div{
+            width: 80%;
+            height: 80px;
+            margin: auto;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+
+        #bottom_div button {
+            width: 80px;
+            height: 80px;
+            margin: auto;
+            background: #D2E7FF;
+            border-radius: 50%;
+            font-size: xx-large;
+            font-weight: bold;
+            border: 0;
+            position: fixed;
+            right: 250px;
+            bottom: 0px;
+            float: right;
+        }
+
+        #bottom_div button:hover {
+            color: white;
+            box-shadow: #499AFA 0 0px 0px 40px inset;
+        }
+
+        #groups_div {
+            width: 100%;
+            height: 500px;
+            margin: auto;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+            align-content: flex-start; 
+        }
+
+        #groups_div .group_div {
+            width: 30%;
+            height: 50%;
+            margin-left: 10px;
+            margin-top: 10px;
+            background: #FFEE97;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📝 Daily Share</h1>
+
+        <nav id="main_nav">
+            <a href="/new.html">NEW</a>
+            <nav id="main_nav_here">
+                <a href="/group.html">내 그룹</a>
+            </nav>
+            <a href="/community">커뮤니티</a>
+            <a href="/create_group">그룹생성</a>
+        </nav>
+
+        <nav id="sub_nav">
+            <a href="/signup">회원가입</a>
+            <a href="/signin">로그인</a>
+        </nav>
+    </header>
+
+    <body>
+        <div id="wrapper">
+            <div id="title_div">
+                <div class="title_div_left">
+                    <h2>내 그룹</h2>
+                    <button onclick="location.href='update_group';">🖊️</button>
+                </div>
+            </div>
+            
+            <div id="groups_div">
+                <div class="group_div" onclick="moveToGroup('myGroup.html')">
+                    <h3>그룹1</h3>
+                    <h4>3/3</h4>
+                    <h4>🔒</h4>
+                </div>
+                <div class="group_div">
+                    <h3>그룹2</h3>
+                    <h4>2/3</h4>
+                    <h4>🌎</h4>
+                </div>
+                <div class="group_div">
+                    <h3>그룹3</h3>
+                    <h4>3/5</h4>
+                    <h4>🔒</h4>
+                </div>
+            </div>
+            <div id="bottom_div">
+                <button onclick="location.href='create_group';">
+                    +
+                </button>
+            </div>
+        </div>
+    </body>
+<script>
+
+    function moveToGroup(url) {
+        location.href=url;
+    }
+
+</script>
+</body>
+</html>
