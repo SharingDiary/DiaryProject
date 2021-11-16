@@ -98,21 +98,21 @@
             border-radius: 5px;
         }
 
-        #input_group_discription{
+        #input_group_description{
             width: 80%;
             margin: auto;
             margin-top: 30px;
             display: flex;
         }
 
-        #input_group_discription h3{
+        #input_group_description h3{
             width: 25%;
             height: 25px;
             margin: 0 auto;
             margin-left: 10px;
         }
 
-        #input_group_discription textarea{
+        #input_group_description textarea{
             width: 70%;
             height: 100px;
             margin: auto;
@@ -249,9 +249,9 @@
                     <input type="text" name="name" placeholder="그룹명을 입력해주세요.">
                 </div>
 
-                <div id="input_group_discription">
+                <div id="input_group_description">
                     <h3>그룹 설명</h3>
-                    <textarea name="discription" placeholder="그룹 설명을 입력해주세요."></textarea>
+                    <textarea name="description" placeholder="그룹 설명을 입력해주세요."></textarea>
                 </div>
 
                 <div id="input_headcount">
@@ -267,8 +267,9 @@
 
                 <div id="member_recruitment">
                     <h3>커뮤니티에서 그룹 구하기<span>
-                        <input type="checkbox" name="recruitment">
-                    </span></h3>
+                        <input type="checkbox" name="recruitment" id="recruitment" value = 1>
+                        <input type="hidden" name="recruitment" value=0 id="recruitment_hidden"/>
+                    </h3>
                     
                 </div>
 
@@ -281,9 +282,8 @@
 
     </body>
 <script>
-    
+
 </script>
 
 </body>
 </html>
-
