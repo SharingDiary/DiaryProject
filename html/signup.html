@@ -132,7 +132,6 @@
       }
 
   </style>
-
 </head>
 <body>
   <header>
@@ -152,7 +151,7 @@
 </header>
 <body>
   <div class="login-form">
-    <form>
+    <form action="/sign_up_process" method="post">
       <h2>회원가입</h2>
       <div class="info">
       <h4>내 정보 입력</h4>
@@ -161,7 +160,8 @@
       </div>
       <div class="info-one">
       <b>아이디</b><input type="text" name="email" class="text-field">
-      <input type="button" value="중복 확인" id="id-btn"> <br>
+      <!-- <a href="/sign_up_id_check"> -->
+      <input type="button" value="중복 확인" id="id-btn"><br>
       </div>
       <div class="info-one">
       <b>비밀번호</b>
