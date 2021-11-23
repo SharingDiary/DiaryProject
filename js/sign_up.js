@@ -25,34 +25,46 @@ let app = http.createServer(function(request, response) {
             response.end(data, 'utf-8');
         });
     } else if (pathname === "/sign_up_process") {
-        var body='';
+        let body='';
         let correct_pwd = false;
+        let unique_id = true;
         request.on('data', function(data) {
             body = body + data;
         });
         request.on('end', function() {
-            var post = qs.parse(body);
-            if (post.nickname === '' || post.email === '' || post.password === '' || post.repassword === '') {
-                console.log('정보를 모두 입력해주세요.');
-            } else {
-                if (post.password === post.repassword) {
-                    correct_pwd = true;
+            db.query(`SELECT * FROM member`, function(error2, members) {
+                let i = 0;
+                var post = qs.parse(body);
+                if (post.nickname === '' || post.email === '' || post.password === '' || post.repassword === '') {
+                    console.log('정보를 모두 입력해주세요.');
                 } else {
-                    console.log('비밀번호가 일치하지 않습니다.');
+                    while(i<members.length) {
+                        if (members[i].member_id === post.email) {
+                            console.log('이미 가입된 아이디입니다.');
+                            unique_id = false;
+                            break;
+                        }
+                        i++;
+                    }
+                    if (post.password === post.repassword) {
+                        correct_pwd = true;
+                    } else {
+                        console.log('비밀번호가 일치하지 않습니다.');
+                    }
                 }
-            }
-            if (correct_pwd) {
-                db.query(`INSERT INTO member (member_id, password, nickname, gender)
-                VALUES(?, ?, ?, 'F')`, [post.email, post.password, post.nickname], function(error, result) {
-                if (error) throw error;
-                response.writeHead(302, {Location: `/log_in`});
-                response.end();
-            });
-                
-            } else {
-                response.writeHead(302, {Location: `/sign_up`});
-                response.end();
-            }           
+
+                if (correct_pwd && unique_id) {
+                    db.query(`INSERT INTO member (member_id, password, nickname, gender)
+                    VALUES(?, ?, ?, 'F')`, [post.email, post.password, post.nickname], function(error, result) {
+                        if (error) throw error;
+                        response.writeHead(302, {Location: `/log_in`});
+                        response.end();
+                    });  
+                } else {
+                    response.writeHead(302, {Location: `/sign_up`});
+                    response.end();
+                } 
+            });    
         });
     } else if (pathname === "/sign_up_id_check"){
         console.log('suprise!');
