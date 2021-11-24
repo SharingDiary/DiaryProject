@@ -49,10 +49,31 @@ app.get('/community', function(req, res){
 
 app.get('/recruitment_post/:postId', function(req, res){
     var title = '그룹원 모집글 조회';
-    var body = '<p>그룹원 모집글 상세보기</p>';
+    var postId = parseInt(path.parse(req.params.postId).base);
 
-    var html = template.HTML(template.loginNav(false), title, body);
-    res.send(html);
+    db.query(`SELECT * FROM recruitment_post WHERE post_id=${postId}`, 
+        function(error, topics){
+            if(error){
+                throw error;
+            }
+
+            console.log("그룹원 모집글("+postId+") 조회 완료");
+            console.log(topics);
+
+            var body = `<h2 id="title">그룹원 모집글</h2>
+                    <div id="input_title">
+                        <h3>제목</h3>
+                        <input type="text" name="title" value="${topics[0].title}" readonly>
+                    </div>
+
+                    <div id="input_content">
+                        <h3>내용</h3>
+                        <textarea name="content" readonly>${topics[0].content}</textarea>
+                    </div>`;
+
+            var html = template.HTML(template.loginNav(false), title, body);
+            res.send(html);
+        });
 });
 
 app.get('/create_group', function(req, res){
