@@ -2,9 +2,9 @@ let express = require('express');
 let app = express();
 let router = express.Router();
 let fs = require('fs');
-let db = require('../js/lib/db.js');
+let db = require('../lib/db');
 let path = require('path');
-let template = require('../js/lib/template.js');
+let template = require('../lib/template');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 

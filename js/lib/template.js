@@ -1,5 +1,3 @@
-const { request } = require("http");
-
 module.exports = {
     HTML:function(loginNav, title, body) {
         return `

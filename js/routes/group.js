@@ -2,8 +2,8 @@ let express = require('express');
 let app = express();
 let router = express.Router();
 let fs = require('fs');
-let db = require('../js/lib/db.js');
-let template = require('../js/lib/template.js');
+let db = require('../lib/db');
+let template = require('../lib/template');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/myGroup/:groupId', (req, res) => {
-    fs.readFile(__dirname + '/../html/myGroup.html', 'utf8', function (err, data) { 
+    fs.readFile(__dirname + '/../../html/myGroup.html', 'utf8', function (err, data) { 
         if (err) {
           throw err; 
         }

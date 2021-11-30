@@ -6,8 +6,8 @@ var path = require('path');
 var qs = require('querystring');
 let db = require('./lib/db.js');
 const bodyParser = require('body-parser');
-let groupCreateRouter = require('../routes/create_group');
-let groupRouter = require('../routes/group');
+let groupCreateRouter = require('./routes/create_group');
+let groupRouter = require('./routes/group');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
