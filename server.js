@@ -1,5 +1,8 @@
 require('dotenv').config()
 
+//참고하면 좋은 사이트
+//https://for-development.tistory.com/25
+
 //passport를 이용하기 위한 모듈
 const express = require('express')
 const app = express()
@@ -31,7 +34,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-//
 app.get('/', (req, res) => {
   res.render('Base.html')
 })
@@ -51,8 +53,7 @@ app.get('/Mypage', (req, res) => {
 })
 
 app.get('/main', function (req, res, next) {
-  var id = req.user;
-  res.render('main.html',{title: id})
+  res.render('main.html')
 });
 
 //로그아웃
