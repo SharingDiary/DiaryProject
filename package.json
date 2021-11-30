@@ -1,0 +1,41 @@
+{
+  "name": "diaryproject",
+  "version": "1.0.0",
+  "description": "Shary(Sharing Diary): 온라인 교환일기 서비스",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-flash": "^0.1.1",
+    "consolidate": "^0.16.0",
+    "crypto": "^1.0.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.17.2",
+    "memory": "0.0.3",
+    "method-override": "^3.0.0",
+    "mustache": "^4.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SharingDiary/DiaryProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SharingDiary/DiaryProject/issues"
+  },
+  "homepage": "https://github.com/SharingDiary/DiaryProject#readme"
+}
