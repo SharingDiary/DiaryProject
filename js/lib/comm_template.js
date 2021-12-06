@@ -1,5 +1,5 @@
 module.exports = {
-    HTML: function(nav_style, community_style, script, list){
+    HTML: function(nav_style, community_style, script, list, popup){
         return `<!DOCTYPE html>
         <html lang="kr">
         <head>
@@ -39,16 +39,7 @@ module.exports = {
                 <div class="group-container">
                     ${list}
                 </div>
-                <div class="group-reply-popup">
-                    <div class="group-reply-popup-wrap">
-                        <div class="group-question">
-                            <p><span class="group-invitaion-name">redvelvet</span> 님을 그룹으로 초대하시겠습니까?</p>
-                        </div>
-                        <div class="group-invitation-btn">
-                            <p>초대</p>
-                        </div>
-                    </div>
-                </div>
+                ${popup}
             </div>
         </body>
         </html>        
@@ -70,15 +61,25 @@ module.exports = {
         
         // var invitation = $('.reply-profile');
         $(document).on("click", ".reply-profile", function (event) {
-        x = event.pageX;
-        y = event.pageY; 
-        //    alert('x좌표:' +x + ', y좌표:' + y);
-        $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
-        //    console.log("whyery");
+            let index = event.target.getAttribute('class');
+            let indexArr = index.split(" ");
+            console.log(indexArr[2]);
+            x = event.pageX;
+            y = event.pageY; 
+            //    alert('x좌표:' +x + ', y좌표:' + y);
+            $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
         })
+
+        // .group-invitation-exit-btn
+        $(document).on("click", ".group-invitation-exit-btn", function (event) {
+            x = event.pageX;
+            y = event.pageY; 
+            //    alert('x좌표:' +x + ', y좌표:' + y);
+            $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).hide();
+            })
     </script>
     `,
-    writing: function(_id, title, people, master_name, desc, reply){
+    writing: function(_id, title, now_people, people, master_name, desc, reply){
         let html = `
         <div class="group-bar">
             <div class="group-desc">
@@ -86,6 +87,8 @@ module.exports = {
                     <p class="group-title">${title}</p>
                     <div class="group-people">
                         <p class="group-how-many">그룹 인원: </p>
+                        <p class="group-now-people">${now_people}</p>
+                        <p> / </p>
                         <p class="group-number-of-people">${people}</p>
                     </div>
                 </div>
@@ -93,7 +96,7 @@ module.exports = {
                     <div class="group-master-profile">
                         <div class="group-profile">
                             <div class="profile-photo"></div>
-                            <div class="profile-nickname"><p>aespa</p></div>
+                            <div class="profile-nickname"><p>${master_name}</p></div>
                         </div>
                     </div>
                     <div class="group-writing-wrap">
@@ -114,21 +117,48 @@ module.exports = {
         </div>`
         return html;
     },
-    reply: function(writer, content) {
+    reply: function(writer, content, reply_id, post_id, writer_id) {
         let html = `
             <div class="group-reply">
                 <div class="group-reply-profile">
-                        <div class="group-profile">
-                            <div class="profile-photo reply-profile"></div>
-                            <div class="profile-name-reply">
-                                <div class="profile-nickname reply-profile"><p>${writer}</p></div>
-                                <div class="group-reply-wrap">
-                                    <p class="group-reply-inside">${content}</p>
-                                </div>
+                    <div class="group-profile">
+                        <div class="profile-photo reply-profile ${reply_id}"></div>
+                        <div class="profile-name-reply">
+                            <div class="profile-nickname reply-profile ${reply_id}">${writer}</div>
+                            <div class="group-reply-wrap">
+                                <p class="group-reply-inside">${content}</p>
+                            </div>
                         </div>
+                    </div>
+                    <div class="reply-submit-btn">
+                        <form action="/reply_invite_process" method="post" onsubmit="return confirm('초대하시겠습니까?');">
+                            <input type="hidden" name="reply_id" value="${reply_id}">
+                            <input type="hidden" name="post_id" value="${post_id}">
+                            <input type="hidden" name="writer_id" value="${writer_id}">
+                            <input type="submit" class="group-invitation-inbtn" value="초대">
+                        </form>
                     </div>
                 </div>
             </div>`;
         return html;
-    }
+    },
+    pop_up: function() {
+        let html = `
+            <div class="group-reply-popup">
+                <div class="group-reply-popup-wrap">
+                    <div class="group-question">
+                        <p><span class="group-invitaion-name">redvelvet</span> 님을 그룹으로 초대하시겠습니까?</p>
+                    </div>
+                    <form action="/reply_invite_process" method="post">            
+                        <div class="group-invitation-btn-wrap">
+                            <input type="submit" class="group-invitation-btn" value="초대">
+                        </div>
+                        <div class="group-invitation-exit-btn">
+                            <p>닫기</p>
+                        </div>
+                    </form>
+                </div>
+            </div>`;
+        return html;
+    } 
 }

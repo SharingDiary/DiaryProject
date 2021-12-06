@@ -28,5 +28,5 @@
 
 .group-reply-popup {background:#FFEC86; width:220px; height:auto; padding: 10px; position:absolute; 
     display: none; border: 1px solid white;}
-.group-invitation-btn {background: #FDD713; padding:10px;}
+.group-invitation-btn {width: 100%; background: #FDD713; padding:10px; margin-bottom: 5px; cursor: pointer; border: none;}
 .group-invitation-btn p {color: white; margin:0;}
