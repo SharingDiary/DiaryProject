@@ -7,12 +7,18 @@ var qs = require('querystring');
 let db = require('./lib/db.js');
 const bodyParser = require('body-parser');
 let groupCreateRouter = require('./routes/create_group');
+let groupUpdateRouter = require('./routes/update_group');
+let groupDeleteRouter = require('./routes/delete_group');
 let groupRouter = require('./routes/group');
+let communityRouter = require('./routes/community');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/create_group', groupCreateRouter); // create_group으로 시작하는 주소는 그룹 생성과 관련 
 app.use('/group', groupRouter); // group으로 시작하는 주소는 내 그룹 화면
+app.use('/create_group', groupCreateRouter); // create_group으로 시작하는 주소는 그룹 생성과 관련 
+app.use('/update_group', groupUpdateRouter); // update_group으로 시작하는 주소는 그룹 수정과 관련
+app.use('/delete_group', groupDeleteRouter); //delete_group으로 시작하는 주소는 그룹 삭제와 관련
+app.use('/community', communityRouter); //community로 시작하는 주소는 커뮤니티 관련 
 
 
 app.get('/', function(req, res){
@@ -39,13 +45,13 @@ app.get('/new', function(req, res){
 //     res.send(html);
 // });
 
-app.get('/community', function(req, res){
-    var title = '커뮤니티';
-    var body = '<p>그룹원 모집글 보기</p>';
+// app.get('/community', function(req, res){
+//     var title = '커뮤니티';
+//     var body = '<p>그룹원 모집글 보기</p>';
 
-    var html = template.HTML(template.loginNav(false), title, body);
-    res.send(html);
-});
+//     var html = template.HTML(template.loginNav(false), title, body);
+//     res.send(html);
+// });
 
 // app.get('/create_group', function(req, res){
 //     var title = '그룹 생성';

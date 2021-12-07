@@ -1,9 +1,8 @@
 let express = require('express');
+let asyncify = require('express-asyncify');
 let app = express();
-let router = express.Router();
-let fs = require('fs');
+let router = asyncify(express.Router());
 let db = require('../lib/db');
-let path = require('path');
 let template = require('../lib/template');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,59 +13,59 @@ router.get('/', (req, res) => {
     res.send(html);
 });
 
-router.post('/create_group_process', (req, res) => {
+router.post('/create_group_process', async (req, res) => {
     let name = req.body.name;
     let description = req.body.description;
     let headcount = parseInt(req.body.headcount);
     let recruitment = parseInt(req.body.recruitment);
     let member = req.body.member; 
+    let userId = 'yih'
     let groupId;
+
+    let promise = new Promise(function(resolve, reject) {
+        db.query(`INSERT INTO diaryProject.group (group_id, name, description, recruitment, headcount)
+            VALUES(null, ?, ?, ?, ?)`, [name, description, recruitment, headcount], function(err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                res.insertId = result.insertId;
+                resolve(res.insertId);
+            }
+        });
+    });
 
     if(member != "") { // 멤버 초대
         member = member.replace(" ", "");
         let m = member.split(','); //여러명 초대시 콤마로 멤버 구분
         if(m.length > headcount - 1) { //희망인원수보다 초대 그룹원이 더 많을 때 
-            return res.send("<script>alert('more than headcount');history.back();</script>");
+             return res.send("<script>alert('more than headcount');history.back();</script>");
         } else { 
-            db.query(`INSERT INTO diaryProject.group (group_id, name, description, recruitment, headcount)
-                VALUES(null, ?, ?, ?, ?)`, [name, description, recruitment, headcount], function(err, result) {
-                    groupId = result.insertId;
-                    if(err) throw err;
-                    for(let i = 0; i < m.length; i++) {
-                        db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
-                            VALUES(?, ?, 0)`, [groupId, m[i]], function(err2, result) {
-                                if(err2) throw err2;
-                        });   
-                    }
-                    db.query(`INSERT INTO group_member (group_id, member_id, is_leader) 
-                        VALUES(?, ?, 1)`, [groupId, 'yih'], function(err3, result) { //그룹 생성하는 사람이 그룹장 
-                            if(err3) throw err3;
-                    });                
-
-                    if (recruitment) { //커뮤니티에서 그룹 구할 때 
-                        res.redirect(`/create_group/recruitment_post_create/${groupId}`); //모집글 작성 페이지로 이동
-                    } else {
-                        res.redirect(`/group`); //그룹 페이지로 이동
-                    }
-            });
-        }
-    } else { //멤버 초대 안할 때 
-        db.query(`INSERT INTO diaryProject.group (group_id, name, description, recruitment, headcount)
-        VALUES(null, ?, ?, ?, ?)`, [name, description, recruitment, headcount], function(err, result) {
-            groupId = result.insertId;
-            if(err) throw err;
-            
-            db.query(`INSERT INTO group_member (group_id, member_id, is_leader) 
-                VALUES(?, ?, 1)`, [groupId, 'yih'], function(err2, result) { //그룹 생성하는 사람이 그룹장 
+            groupId = await promise;
+    
+            for(let i = 0; i < m.length; i++) {
+                db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
+                    VALUES(?, ?, 0)`, [groupId, m[i]], function(err2, result) { //그룹원 추가 
                     if(err2) throw err2;
-            });
-
-            if (recruitment) { //커뮤니티에서 그룹 구할 때 
-                res.redirect(`/create_group/recruitment_post_create/${groupId}`); //모집글 작성 페이지로 이동
-            } else {
-                res.redirect(`/group`); //그룹 페이지로 이동
+                });   
             }
+    
+            db.query(`INSERT INTO group_member (group_id, member_id, is_leader) 
+                VALUES(?, ?, 1)`, [groupId, userId], function(err3, result) { //그룹 생성하는 사람이 그룹장 
+                    if(err3) throw err3;
+            });    
+        }
+    } else { //멤버 초대 안할 때  
+        groupId = await promise;
+        db.query(`INSERT INTO group_member (group_id, member_id, is_leader) 
+            VALUES(?, ?, 1)`, [groupId, userId], function(err2, result) { //그룹 생성하는 사람이 그룹장 
+                if(err2) throw err2;
         });
+    }
+
+    if (recruitment) { //커뮤니티에서 그룹 구할 때 
+        res.redirect(`/create_group/recruitment_post_create/${groupId}`); //모집글 작성 페이지로 이동
+    } else {
+        res.redirect(`/group`); //그룹 페이지로 이동
     }
 });
 

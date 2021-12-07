@@ -625,6 +625,42 @@ module.exports = {
             margin-top: 10px;
             background: #FFEE97;
             cursor: pointer;
+            text-align: center;
+        }
+
+        #groups_div .group_div a.button{
+            margin-top: 10px;
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            appearance: button;
+            text-decoration: none;
+        }
+
+        #groups_div .group_div button{
+            width: 50px;
+            heigth: 50px;
+            margin-right: 5px;
+            background: none;  
+            border-radius: 25px;
+            border: 10px transparent solid;
+            text-align: center;
+        }
+
+        #groups_div .group_div button:hover{
+            background: #FCC718;
+        }
+
+        #groups_div .group_div input{
+            width: 50px;
+            heigth: 50px;
+            margin-top: 10px;
+            background-color: transparent;  
+            border-radius: 25px;
+            border: 10px transparent solid;
+        }
+
+        #groups_div .group_div input:hover{
+            background-color: #FC6F6F;
         }
 
     </style>
@@ -661,8 +697,9 @@ module.exports = {
 </html>
         `;
     },
-    groupList:function(groups, count, requestUrl) {
+    groupList:function(userId, groups, count, requestUrl) {
         let list = ``;
+        let control = ``;
         let recruitmentState = '';
         for(let i = 0; i < groups.length; i++) {
             if(groups[i].recruitment == 1) {
@@ -670,14 +707,287 @@ module.exports = {
             } else {
                 recruitmentState = '🔒';
             }
+            let groupId = groups[i].group_id;
+            if(groups[i].is_leader == 1 && groups[i].member_id == userId) { //그룹 생성한 사람만 수정, 삭제 버튼 보임
+                control = `
+                <a href="/update_group/${groupId}" class="button">🖊️</a>
+                <form action="/delete_group" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+                    <input type="hidden" name="groupId" value="${groupId}">
+                    <input type="submit" value="🗑️">
+                </form>
+                `;
+            }
             list += `
             <div class="group_div" onclick="moveToGroup('${requestUrl}/myGroup/${groups[i].group_id}')">
             <h3>${groups[i].name}</h3>
             <h4>${count[i].currentHeadcount}/${groups[i].headcount}</h4>
             <h4>${recruitmentState}</h4>
+            <h5>${control}</h5>
             </div>`;
         }
         return list;
+    },
+    updateGroupHTML: function(loginNav, title, body) {
+        return `
+        <!DOCTYPE html>
+        <html lang="kr">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="group_modify.html">
+            <meta name="author" content="데베플 3팀">
+        
+            <title>그룹 수정</title>
+        
+            <style>
+                header{
+                    width: 100%;
+                    height: 80px;
+                    position: fixed;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: #FFEC86;
+                    font-weight: bold;
+                }
+        
+                header h1{
+                    width: 300px;
+                    margin-left: 20px;
+                }
+        
+                #main_nav{
+                    width: 600px;
+                    display: flex;
+                    justify-content: space-between;
+                }
+        
+                #main_nav a{
+                    font-size: x-large;
+                    color: #666;
+                    text-decoration: none;
+                }
+        
+                #sub_nav{
+                    width: 300px;
+                    display: block;
+                    margin-right: 50px;
+                }
+        
+                #sub_nav a{
+                    float: right;
+                    margin-left: 30px;
+                    font-size: small;
+                    color: #444;
+                    text-decoration: none;
+                }
+        
+                body {
+                    margin: 0 auto;
+                    padding-top: 80px;
+                    display: flex;
+                    justify-content: center;
+                    min-height: 100vh;
+                }
+        
+                #wrapper{
+                    min-height: 100%;
+                    margin: 0 auto;
+                    max-width: 800px;
+                    width: 100%;
+                    text-align: center;
+                    background:lightyellow;
+                }
+        
+                #title {
+                    margin-top: 40px;
+                }
+        
+                #input_group_name {
+                    width: 80%;
+                    margin: auto;
+                    margin-top: 30px;
+                    display: flex;
+                }
+        
+                #input_group_name h3{
+                    width: 25%;
+                    height: 25px;
+                    margin: auto;
+                    margin-left: 10px;
+                }
+        
+                #input_group_name input{
+                    width: 70%;
+                    height: 25px;
+                    margin: auto;
+                    margin-left: 10px;
+                    border: lightgray solid 1px;
+                    border-radius: 5px;
+                }
+        
+                #input_group_description{
+                    width: 80%;
+                    margin: auto;
+                    margin-top: 30px;
+                    display: flex;
+                }
+        
+                #input_group_description h3{
+                    width: 25%;
+                    height: 25px;
+                    margin: 0 auto;
+                    margin-left: 10px;
+                }
+        
+                #input_group_description textarea{
+                    width: 70%;
+                    height: 100px;
+                    margin: auto;
+                    margin-left: 10px;
+                    border: lightgray solid 1px;
+                    border-radius: 5px;
+                }
+        
+                #input_headcount{
+                    width: 80%;
+                    margin: auto;
+                    margin-top: 30px;
+                    display: flex;
+                }
+        
+                #input_headcount h3{
+                    width: 25%;
+                    height: 25px;
+                    margin: 0 auto;
+                    margin-left: 10px;
+                }
+        
+                #input_headcount input{
+                    width: 70%;
+                    height: 25px;
+                    margin: auto;
+                    margin-left: 10px;
+                    border: lightgray solid 1px;
+                    border-radius: 5px;
+                }
+        
+                #group_member{
+                    width: 80%;
+                    margin: auto;
+                    margin-top: 30px;
+                    display: flex;
+                }
+        
+                #group_member h3{
+                    width: 25%;
+                    height: 25px;
+                    margin: 0 auto;
+                    margin-left: 10px;
+                }
+        
+                #group_member textarea{
+                    width: 55%;
+                    height: 100px;
+                    margin: auto;
+                    margin-left: 10px;
+                    border: lightgray solid 1px;
+                    border-radius: 5px;
+                }
+        
+                #group_member button{
+                    width: 10%;
+                    height: 25px;
+                    margin: 0 auto;
+                    margin-left: 10px;
+                    background-color: lightgray;
+                    border: transparent;
+                    border-radius: 5px;
+                }
+                
+                #member_recruitment{
+                    width: 80%;
+                    margin: auto;
+                    margin-top: 30px;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                }
+        
+                #member_recruitment h3{
+                    height: 20px;
+                    margin: auto;
+                }
+        
+                #member_recruitment input{
+                    width: 18px;
+                    height: 18px;
+                    margin-left: 10px;
+                }
+                
+                #submit_div{
+                    width: 80%;
+                    height: 60px;
+                    margin: auto;
+                    margin-top: 30px;
+                    justify-content: center;
+                }
+        
+                #submit_div input {
+                    width: 100px;
+                    height: 60px;
+                    margin: auto;
+                    background: lightgray;
+                    border-radius: 10px;
+                    font-size: x-large;
+                    border: 0;
+                }
+        
+                #submit_div input:hover {
+                    color: white;
+                    box-shadow: #3CB371 0 0px 0px 40px inset;
+                }
+        
+                a {
+                    text-decoration: none;
+                }
+        
+            </style>
+        
+        </head>
+        <body>
+            <header>
+                <h1>📝 Daily Share</h1>
+        
+                <nav id="main_nav">
+                    <a href="/new">NEW</a>
+                    <a href="/group">내 그룹</a>
+                    <a href="/community">커뮤니티</a>
+                    <a href="/create_group">그룹생성</a>
+                </nav>
+        
+                <nav id="sub_nav">
+                    <a href="/signup">회원가입</a>
+                    <a href="/signin">로그인</a>
+                </nav>
+            </header>
+        
+            <body>
+                <div id="wrapper">
+                    <h2 id="title">${title}</h2>
+                    ${body}
+                </div>
+            </body>
+        <script>
+            
+        </script>
+        
+        </body>
+        </html>
+                `;
     },
     loginNav:function(isLoggedIn) {
         if(isLoggedIn){
