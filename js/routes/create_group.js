@@ -20,7 +20,7 @@ router.post('/create_group_process', async (req, res) => {
     let recruitment = parseInt(req.body.recruitment);
     let member = req.body.member; 
     let userId = 'yih'
-    let groupId;
+    // let groupId;
 
     let promise = new Promise(function(resolve, reject) {
         db.query(`INSERT INTO diaryProject.group (group_id, name, description, recruitment, headcount)
@@ -34,14 +34,14 @@ router.post('/create_group_process', async (req, res) => {
         });
     });
 
+    let groupId = await promise;
+
     if(member != "") { // 멤버 초대
         member = member.replace(" ", "");
         let m = member.split(','); //여러명 초대시 콤마로 멤버 구분
         if(m.length > headcount - 1) { //희망인원수보다 초대 그룹원이 더 많을 때 
              return res.send("<script>alert('more than headcount');history.back();</script>");
         } else { 
-            groupId = await promise;
-    
             for(let i = 0; i < m.length; i++) {
                 db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
                     VALUES(?, ?, 0)`, [groupId, m[i]], function(err2, result) { //그룹원 추가 
@@ -55,7 +55,6 @@ router.post('/create_group_process', async (req, res) => {
             });    
         }
     } else { //멤버 초대 안할 때  
-        groupId = await promise;
         db.query(`INSERT INTO group_member (group_id, member_id, is_leader) 
             VALUES(?, ?, 1)`, [groupId, userId], function(err2, result) { //그룹 생성하는 사람이 그룹장 
                 if(err2) throw err2;
