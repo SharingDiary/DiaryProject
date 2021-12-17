@@ -1,6 +1,4 @@
 const http = require('http');
-const fs = require('fs');
-const url = require('url');
 const qs = require('querystring');
 const path = require('path');
 const mysql = require('mysql');
@@ -8,6 +6,7 @@ const express = require('express');
 const app = express();
 const template = require('./lib/comm_template.js');
 const style_list = require('./lib/comm_style_list.js');
+const bodyParser = require('body-parser');
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -16,6 +15,8 @@ const db = mysql.createConnection({
     database: 'slee'
 });
 db.connect();
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', function(request, response) {
     return response.send('hello page')
@@ -28,7 +29,6 @@ app.get('/community', function(request, response) {
         db.query(`SELECT * FROM recruitment_post LEFT JOIN slee.group ON recruitment_post.group_id = group.group_id`, function(error2, groups) {
             db.query(`SELECT * FROM group_member LEFT JOIN slee.member ON group_member.member_id = slee.member.member_id`, function(error3, group_members) {
                 db.query(`SELECT * FROM recruitment_post_reply LEFT JOIN slee.member ON recruitment_post_reply.writer_id = slee.member.member_id`, function(error4, replys) {
-                    // console.log(group_members);
                     let i = 0;
                     while(i<posts.length) {
                         let k = 0;
@@ -67,97 +67,78 @@ app.get('/community', function(request, response) {
 });
 
 app.post('/reply_process', function(request, response) {
-    var body='';
-    request.on('data', function(data) {
-        body = body + data;
-    });
 
-    request.on('end', function() {
-        var post = qs.parse(body);
-        console.log(post.reply);
-        db.query(`SELECT * FROM recruitment_post_reply`, function(error2, replys) {
-            if (post.reply === '') {
-                console.log('댓글이 비어있습니다.');
-            } else {
-                db.query(`INSERT INTO recruitment_post_reply (post_id, writer_id, content, reg_date)
-                VALUES(?, ?, ?, NOW())`, [post.post_id, "love", post.reply], function(error, result) {
-                    if (error) throw error;
-                    return response.redirect('/community');
-                });  
-            }
-        });
+    let post = request.body;
+    console.log(post.reply);
+    db.query(`SELECT * FROM recruitment_post_reply`, function(error2, replys) {
+        if (post.reply === '') {
+            console.log('댓글이 비어있습니다.');
+        } else {
+            db.query(`INSERT INTO recruitment_post_reply (post_id, writer_id, content, reg_date)
+            VALUES(?, ?, ?, NOW())`, [post.post_id, "love", post.reply], function(error, result) {
+                if (error) throw error;
+                return response.redirect('/community');
+            });  
+        }
     });
 });
 
 app.post('/reply_invite_process', function(request, response) {
-    var body='';
-    request.on('data', function(data) {
-        body = body + data;
-    });
-
-    request.on('end', function() {
-        let post = qs.parse(body);
-        let this_reply_id = post.reply_id;
-        let this_post_id = post.post_id;
-        let this_writer_id = post.writer_id;
-        console.log("reply_id: ", this_reply_id);
-        db.query(`SELECT * FROM recruitment_post_reply`, function(error2, replys) {
-            db.query(`SELECT * FROM recruitment_post LEFT JOIN slee.group ON recruitment_post.group_id = group.group_id`, function(error, posts) {
-                db.query(`SELECT * FROM group_member`, function(error3, group_members) {
-                // if (post.reply === '') {
-                //     console.log('댓글이 비어있습니다.');
-                // } else {
-                    let k = 0;
-                    let this_group_id = 0;
-                    let this_group_headcount = 0;
-                    let i = 0;
-                    let is_here = false;
-                    let now_headcount = 0;
-                    while(k<posts.length) {
-                        if (posts[k].post_id == this_post_id) {
-                            this_group_id = posts[k].group_id;
-                            this_group_headcount = posts[k].headcount;
-                        }
-                        k++;
+    let post = request.body;
+    let this_reply_id = post.reply_id;
+    let this_post_id = post.post_id;
+    let this_writer_id = post.writer_id;
+    console.log("reply_id: ", this_reply_id);
+    db.query(`SELECT * FROM recruitment_post_reply`, function(error2, replys) {
+        db.query(`SELECT * FROM recruitment_post LEFT JOIN slee.group ON recruitment_post.group_id = group.group_id`, function(error, posts) {
+            db.query(`SELECT * FROM group_member`, function(error3, group_members) {
+                let k = 0;
+                let this_group_id = 0;
+                let this_group_headcount = 0;
+                let i = 0;
+                let is_here = false;
+                let now_headcount = 0;
+                while(k<posts.length) {
+                    if (posts[k].post_id == this_post_id) {
+                        this_group_id = posts[k].group_id;
+                        this_group_headcount = posts[k].headcount;
                     }
-                    // console.log("group_id: ", this_group_id);
-                    // console.log("post_id: ", this_post_id);
-                    // console.log("writer_id: ", this_writer_id);
-                    console.log("headcount: ", this_group_headcount);
-                    while(i<group_members.length) {
-                        if(group_members[i].group_id == this_group_id) {
-                            now_headcount++;
-                            if (group_members[i].member_id == this_writer_id) {
-                                is_here = true;
-                            }
+                    k++;
+                }
+                console.log("headcount: ", this_group_headcount);
+                while(i<group_members.length) {
+                    if(group_members[i].group_id == this_group_id) {
+                        now_headcount++;
+                        if (group_members[i].member_id == this_writer_id) {
+                            is_here = true;
                         }
-                        i++;
                     }
-                    
-                    console.log("now: ",now_headcount);
-                    if(is_here){
-                        console.log(this_writer_id, "is already here!");
+                    i++;
+                }
+                
+                console.log("now: ",now_headcount);
+                if(is_here){
+                    console.log(this_writer_id, "is already here!");
+                } else {
+                    if(now_headcount >= this_group_headcount) {
+                        console.log(this_writer_id, "is'nt here. but it's full.");
                     } else {
-                        if(now_headcount >= this_group_headcount) {
-                            console.log(this_writer_id, "is'nt here. but it's full.");
-                        } else {
-                            console.log(this_writer_id, "can be invited.");
-                            db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
-                            VALUES(?, ?, ?)`, [this_group_id, this_writer_id, 0], function(error, result) {
-                                if (error) throw error;
-                                // return response.redirect('/community');
-                            });  
-                        }
+                        console.log(this_writer_id, "can be invited.");
+                        db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
+                        VALUES(?, ?, ?)`, [this_group_id, this_writer_id, 0], function(error, result) {
+                            if (error) throw error;
+                        });  
                     }
-                    return response.redirect('/community');
-                // }
-                });
+                }
+                return response.redirect('/community');
             });
         });
-        // response.send("hi");
     });
 });
 
+app.use(function(request, response, next) {
+    response.status(404).send('Sorry cant find it.')
+})
 app.listen(3000, function() {
     console.log('port 3000')
 });

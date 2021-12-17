@@ -42,8 +42,8 @@ module.exports = {
         font-size: small;
         color: #444;
         text-decoration: none;
-    }
-
+    }`,
+    community: `
     body {
         margin: 0 auto;
         padding-top: 80px;
@@ -60,11 +60,6 @@ module.exports = {
         text-align: center;
         background:lightyellow;
     }
-
-    #title {
-        margin-top: 40px;
-    }`,
-    community: `
     #main_nav .community {color: black;}
 
     .group-container {width:100%; height: 100%;}
