@@ -344,7 +344,7 @@ module.exports = {
                     border-radius: 5px;
                 }
         
-                #group_member button{
+                #group_member input{
                     width: 10%;
                     height: 25px;
                     margin: 0 auto;
@@ -434,8 +434,8 @@ module.exports = {
         
                         <div id="group_member">
                             <h3>그룹원</h3>
-                            <textarea name="member"></textarea>
-                            <button id="invitation">초대</button>
+                            <textarea name="member" placeholder="그룹원 콤마(,)로 연결"></textarea>
+                            <input type="button" id="invitation" value="초대" onclick="searchId();">
                         </div>
         
                         <div id="member_recruitment">
@@ -455,7 +455,9 @@ module.exports = {
         
             </body>
         <script>
-        
+            function searchId(){
+                window.open("/searchId","아이디 찾기","width=400, height=300, top=10, left=10");
+            }
         </script>
         
         </body>
@@ -898,7 +900,7 @@ module.exports = {
                     border-radius: 5px;
                 }
         
-                #group_member button{
+                #group_member input{
                     width: 10%;
                     height: 25px;
                     margin: 0 auto;
@@ -982,12 +984,22 @@ module.exports = {
                 </div>
             </body>
         <script>
-            
+            function searchId(){
+                window.open("/searchId","아이디 찾기","width=400, height=300, top=10, left=10");
+            }
         </script>
-        
         </body>
         </html>
                 `;
+    },
+    searchIdHTML:function(requestUrl, result) {
+        return `
+        <form action="${requestUrl}/process" method="post">
+        아이디: <input type="text" name="memberId">
+        <input type="submit" id="search" value="찾기">
+        <input type="button" id="close" value="닫기" onclick="window.close()">
+        </form>
+        <p style="color:red;">${result}</p>`
     },
     loginNav:function(isLoggedIn) {
         if(isLoggedIn){

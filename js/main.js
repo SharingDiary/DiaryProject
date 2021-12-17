@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 let groupCreateRouter = require('./routes/create_group');
 let groupUpdateRouter = require('./routes/update_group');
 let groupDeleteRouter = require('./routes/delete_group');
+let searchIdRouter = require('./routes/searchId');
 let groupRouter = require('./routes/group');
 let communityRouter = require('./routes/community');
 
@@ -19,7 +20,7 @@ app.use('/create_group', groupCreateRouter); // create_group으로 시작하는 
 app.use('/update_group', groupUpdateRouter); // update_group으로 시작하는 주소는 그룹 수정과 관련
 app.use('/delete_group', groupDeleteRouter); //delete_group으로 시작하는 주소는 그룹 삭제와 관련
 app.use('/community', communityRouter); //community로 시작하는 주소는 커뮤니티 관련 
-
+app.use('/searchId', searchIdRouter); //searchId로 시작하는 주소는 아이디 찾기 
 
 app.get('/', function(req, res){
     var title = '메인페이지';
