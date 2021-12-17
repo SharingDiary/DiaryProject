@@ -1,11 +1,7 @@
-const http = require('http');
-const fs = require('fs');
-const url = require('url');
-const qs = require('querystring');
-const path = require('path');
 const mysql = require('mysql');
 const express = require('express');
 const app = express();
+const router = express.Router();
 const template = require('./lib/su_template.js');
 const style_list = require('./lib/su_style_list.js');
 const bodyParser = require('body-parser');
@@ -13,19 +9,19 @@ const bodyParser = require('body-parser');
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'slee',
-    password: 'password!',
- // password: 'Pi603-zza14!',
+    // password: 'password!',
+    password: 'Pi603-zza14!',
     database: 'slee'
 });
 db.connect();
 
-app.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/sign_up', function(request, response) {
+router.get('/sign_up', function(request, response) {
     response.send(template.HTML(style_list.nav, style_list.sign_up))
 })
 
-app.post('/sign_up_process', function(request, response) {
+router.post('/sign_up_process', function(request, response) {
     let correct_pwd = false;
     let unique_id = true;
 
@@ -62,9 +58,10 @@ app.post('/sign_up_process', function(request, response) {
         } 
     });             
 })
-app.use(function(request, response, next) {
-    response.status(404).send('Sorry cant find it.')
-})
-app.listen(3000, function() {
-    console.log('port 3000')
-});
+// app.use(function(request, response, next) {
+//     response.status(404).send('Sorry cant find it.')
+// })
+// app.listen(3000, function() {
+//     console.log('port 3000')
+// });
+module.exports = router;

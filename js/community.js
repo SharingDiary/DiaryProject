@@ -1,29 +1,27 @@
-const http = require('http');
-const qs = require('querystring');
-const path = require('path');
 const mysql = require('mysql');
 const express = require('express');
 const app = express();
 const template = require('./lib/comm_template.js');
 const style_list = require('./lib/comm_style_list.js');
 const bodyParser = require('body-parser');
+const router = express.Router();
 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'slee',
-    password: 'password!',
-    // password: 'Pi603-zza14!',
+    // password: 'password!',
+    password: 'Pi603-zza14!',
     database: 'slee'
 });
 db.connect();
 
-app.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', function(request, response) {
+router.get('/', function(request, response) {
     return response.send('hello page')
 });
 
-app.get('/community', function(request, response) {
+router.get('/community', function(request, response) {
     let writing_list = "";
     db.query(`SELECT * FROM recruitment_post`, function(error, posts) {
         if (error) throw error;
@@ -67,7 +65,7 @@ app.get('/community', function(request, response) {
     })      
 });
 
-app.post('/reply_process', function(request, response) {
+router.post('/reply_process', function(request, response) {
 
     let post = request.body;
     console.log(post.reply);
@@ -84,7 +82,7 @@ app.post('/reply_process', function(request, response) {
     });
 });
 
-app.post('/reply_invite_process', function(request, response) {
+router.post('/reply_invite_process', function(request, response) {
     let post = request.body;
     let this_reply_id = post.reply_id;
     let this_post_id = post.post_id;
@@ -137,9 +135,10 @@ app.post('/reply_invite_process', function(request, response) {
     });
 });
 
-app.use(function(request, response, next) {
-    response.status(404).send('Sorry cant find it.')
-})
-app.listen(3000, function() {
-    console.log('port 3000')
-});
+// app.use(function(request, response, next) {
+//     response.status(404).send('Sorry cant find it.')
+// })
+// app.listen(3000, function() {
+//     console.log('port 3000')
+// });
+module.exports = router;
