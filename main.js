@@ -49,13 +49,13 @@ app.get('/diary_register', (req, res) => {
                 <div class="top_div_right">
                     <h4>오늘의 날씨</h4>
                     <div class="weather">
-                        <input type="hidden" value="" id="weather" name="weather">
-                        <input type="radio" name="weather" value="sunny" > 맑음
-                        <input type="radio" name="weather" value="cloudy" > 흐림
-                        <input type="radio" name="weather" value="rainy" > 비
-                        <input type="radio" name="weather" value="thunder" > 번개
-                        <input type="radio" name="weather" value="snowy" > 눈
-                    </div>
+                            <input type="hidden" value="" id="weather" name="weather">
+                            <input type="button" value="☀️" id="sunny" onclick="weatherChange('sunny')">
+                            <input type="button" value="🌥" id="cloudy" onclick="weatherChange('cloudy');">
+                            <input type="button" value="🌧" id="rainy" onclick="weatherChange('rainy');">
+                            <input type="button" value="⛈" id="thunder" onclick="weatherChange('thunder');">
+                            <input type="button" value="🌨" id="snowy" onclick="weatherChange('snowy');">
+                        </div>
                 </div>
             </div>
 
@@ -125,6 +125,21 @@ app.get(('/mygroup'),(req,res)=>{
         var i = 0;
         var diary_list = '';
         while(i<diarys.length){
+            // weather은 null 허용
+            var weather_icon = "x";
+            if (diarys[i].weather ==='sunny')
+               weather_icon = "☀️";
+            else if (diarys[i].weather ==='cloudy')
+                weather_icon = "🌥";
+            else if (diarys[i].weather ==='cloudy')
+                weather_icon = "🌧";
+            else if (diarys[i].weather ==='rainy')
+                weather_icon = "🌥";
+            else if (diarys[i].weather ==='thunder')
+                weather_icon = "⛈";
+            else if(diarys[i].weather === 'snowy')
+                weather_icon = "🌨";
+            
             diary_list = diary_list + `<div id="diary_div">
             <div id="diary_top_div">
                 <div class="diary_top_div_left">
@@ -132,7 +147,7 @@ app.get(('/mygroup'),(req,res)=>{
                 </div>
                 <div class="diary_top_div_middle">
                     <h4>${diarys[i].writer_id}</h4>
-                    <h5>${diarys[i].update_day}${diarys[i].weather}</h5>
+                    <h5>${diarys[i].update_day} ${weather_icon}</h5>
     
                 </div>` +
                 // 글쓴이 확인하고 수정 삭제
@@ -181,6 +196,20 @@ app.get(('/new'),(req,res)=>{
         var i = 0;
         var diary_list = '';
         while(i<diarys.length){
+            // weather은 null 허용
+            var weather_icon = "x";
+            if (diarys[i].weather ==='sunny')
+               weather_icon = "☀️";
+            else if (diarys[i].weather ==='cloudy')
+                weather_icon = "🌥";
+            else if (diarys[i].weather ==='cloudy')
+                weather_icon = "🌧";
+            else if (diarys[i].weather ==='rainy')
+                weather_icon = "🌥";
+            else if (diarys[i].weather ==='thunder')
+                weather_icon = "⛈";
+            else if(diarys[i].weather === 'snowy')
+                weather_icon = "🌨";
             diary_list = diary_list + 
             `
             <div id="diary_div">
@@ -190,7 +219,7 @@ app.get(('/new'),(req,res)=>{
                     </div>
                     <div class="diary_top_div_middle">
                         <h4>${diarys[i].writer_id} / ${groupName}</h4>
-                        <h5>${diarys[i].writer_day}</h5>
+                        <h5>${diarys[i].writer_day} ${weather_icon}</h5>
                     </div>
                     
                 </div>
