@@ -100,6 +100,8 @@ router.post('/reply_invite_process', function(request, response) {
                 let k = 0;
                 let this_group_id = 0;
                 let this_group_headcount = 0;
+                let this_group_leader = "";
+                let this_user = "mfirst";
                 let i = 0;
                 let is_here = false;
                 let now_headcount = 0;
@@ -117,27 +119,33 @@ router.post('/reply_invite_process', function(request, response) {
                         if (group_members[i].member_id == this_writer_id) {
                             is_here = true;
                         }
+                        if (group_members[i].is_leader == 1) {
+                            this_group_leader = group_members[i].member_id;
+                        }
                     }
                     i++;
                 }
                 
                 console.log("now: ",now_headcount);
-                if(is_here){
-                    console.log(this_writer_id, "is already here!");
-                    alert_script = "<script>alert('이미 그룹에 가입된 멤버입니다.')</script>"
-                } else {
-                    if(now_headcount >= this_group_headcount) {
-                        console.log(this_writer_id, "is'nt here. but it's full.");
-                        alert_script = "<script>alert('인원 모집이 끝난 그룹입니다.')</script>"
+                console.log("leader: ", this_group_leader);
+                if(this_group_leader == this_user) {
+                    if(is_here){
+                        alert_script = "<script>alert('이미 그룹에 가입된 멤버입니다.')</script>"
                     } else {
-                        console.log(this_writer_id, "can be invited.");
-                        alert_script = "";
-                        db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
-                        VALUES(?, ?, ?)`, [this_group_id, this_writer_id, 0], function(error, result) {
-                            if (error) throw error;
-                        });  
+                        if(now_headcount >= this_group_headcount) {
+                            alert_script = "<script>alert('인원 모집이 끝난 그룹입니다.')</script>"
+                        } else {
+                            alert_script = "";
+                            db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
+                            VALUES(?, ?, ?)`, [this_group_id, this_writer_id, 0], function(error, result) {
+                                if (error) throw error;
+                            });  
+                        }
                     }
+                } else {
+                    alert_script="<script>alert('초대 권한이 없습니다.')</script>"
                 }
+                
                 return response.redirect('/community');
             });
         });
