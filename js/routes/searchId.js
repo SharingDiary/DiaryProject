@@ -1,7 +1,6 @@
 let express = require('express');
 let app = express();
 let router = express.Router();
-let fs = require('fs');
 let db = require('../lib/db');
 let template = require('../lib/template');
 const bodyParser = require('body-parser');

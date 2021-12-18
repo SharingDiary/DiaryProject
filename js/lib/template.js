@@ -598,7 +598,7 @@ module.exports = {
             font-weight: bold;
             border: 0;
             position: fixed;
-            right: 250px;
+            right: 350px;
             bottom: 0px;
             float: right;
         }
