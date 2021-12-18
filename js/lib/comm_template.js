@@ -1,5 +1,5 @@
 module.exports = {
-    HTML: function(nav_style, community_style, script, list, popup){
+    HTML: function(nav_style, community_style, script, list){
         return `<!DOCTYPE html>
         <html lang="kr">
         <head>
@@ -33,52 +33,50 @@ module.exports = {
                 </nav>
             </header>
             <div id="wrapper">
-                <div class="search-group">
-                    <p>그룹 검색</p>
-                </div>
                 <div class="group-container">
                     ${list}
                 </div>
-                ${popup}
             </div>
         </body>
         </html>        
         `
     },
-    custom_script: `
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        console.log("hi");
-        $(document).on("click", ".spread-more", function() {
-            var index = $(".spread-more").index(this); 
-            // console.log(index);
-            if($('.group-more-desc').eq(index).css('display') === 'none'){       
-                $(".group-more-desc").eq(index).show();
-            } else { 
-                $(".group-more-desc").eq(index).hide();
-            }
-        });
-        
-        // var invitation = $('.reply-profile');
-        $(document).on("click", ".reply-profile", function (event) {
-            let index = event.target.getAttribute('class');
-            let indexArr = index.split(" ");
-            console.log(indexArr[2]);
-            x = event.pageX;
-            y = event.pageY; 
-            //    alert('x좌표:' +x + ', y좌표:' + y);
-            $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
-        })
-
-        // .group-invitation-exit-btn
-        $(document).on("click", ".group-invitation-exit-btn", function (event) {
-            x = event.pageX;
-            y = event.pageY; 
-            //    alert('x좌표:' +x + ', y좌표:' + y);
-            $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).hide();
-            })
-    </script>
-    `,
+    custom_script: function(alert_script){
+        return `
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        ${alert_script}
+        <script>
+            $(document).on("click", ".spread-more", function() {
+                var index = $(".spread-more").index(this); 
+                // console.log(index);
+                if($('.group-more-desc').eq(index).css('display') === 'none'){       
+                    $(".group-more-desc").eq(index).show();
+                } else { 
+                    $(".group-more-desc").eq(index).hide();
+                }
+            });
+            
+            // var invitation = $('.reply-profile');
+            // $(document).on("click", ".reply-profile", function (event) {
+            //     let index = event.target.getAttribute('class');
+            //     let indexArr = index.split(" ");
+            //     console.log(indexArr[2]);
+            //     x = event.pageX;
+            //     y = event.pageY; 
+            //     //    alert('x좌표:' +x + ', y좌표:' + y);
+            //     $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
+            // })
+    
+            // .group-invitation-exit-btn
+            // $(document).on("click", ".group-invitation-exit-btn", function (event) {
+            //     x = event.pageX;
+            //     y = event.pageY; 
+            //     //    alert('x좌표:' +x + ', y좌표:' + y);
+            //     $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).hide();
+            //     })
+        </script>
+        `
+    },
     writing: function(_id, title, now_people, people, master_name, desc, reply){
         let html = `
         <div class="group-bar">
@@ -141,24 +139,5 @@ module.exports = {
                 </div>
             </div>`;
         return html;
-    },
-    pop_up: function() {
-        let html = `
-            <div class="group-reply-popup">
-                <div class="group-reply-popup-wrap">
-                    <div class="group-question">
-                        <p><span class="group-invitaion-name">redvelvet</span> 님을 그룹으로 초대하시겠습니까?</p>
-                    </div>
-                    <form action="/reply_invite_process" method="post">            
-                        <div class="group-invitation-btn-wrap">
-                            <input type="submit" class="group-invitation-btn" value="초대">
-                        </div>
-                        <div class="group-invitation-exit-btn">
-                            <p>닫기</p>
-                        </div>
-                    </form>
-                </div>
-            </div>`;
-        return html;
-    } 
+    }
 }

@@ -15,6 +15,8 @@ const db = mysql.createConnection({
 });
 db.connect();
 
+let alert_script = "";
+
 router.use(bodyParser.urlencoded({extended: false}));
 
 router.get('/', function(request, response) {
@@ -58,7 +60,8 @@ router.get('/community', function(request, response) {
                         writing_list = writing_list + template.writing(_id, title, now_people, people, group_master, desc, reply);
                         i++;
                     }
-                    response.send(template.HTML(style_list.nav, style_list.community, template.custom_script, writing_list, template.pop_up()))
+                    response.send(template.HTML(style_list.nav, style_list.community, template.custom_script(alert_script), writing_list))
+                    alert_script = "";
                 });
             });
         })
@@ -72,13 +75,16 @@ router.post('/reply_process', function(request, response) {
     db.query(`SELECT * FROM recruitment_post_reply`, function(error2, replys) {
         if (post.reply === '') {
             console.log('댓글이 비어있습니다.');
+            alert_script = "<script>alert('댓글이 비어있습니다.')</script>"
         } else {
+            alert_script = "";
             db.query(`INSERT INTO recruitment_post_reply (post_id, writer_id, content, reg_date)
             VALUES(?, ?, ?, NOW())`, [post.post_id, "id1212", post.reply], function(error, result) {
                 if (error) throw error;
-                return response.redirect('/community');
+                
             });  
         }
+        return response.redirect('/community');
     });
 });
 
@@ -118,11 +124,14 @@ router.post('/reply_invite_process', function(request, response) {
                 console.log("now: ",now_headcount);
                 if(is_here){
                     console.log(this_writer_id, "is already here!");
+                    alert_script = "<script>alert('이미 그룹에 가입된 멤버입니다.')</script>"
                 } else {
                     if(now_headcount >= this_group_headcount) {
                         console.log(this_writer_id, "is'nt here. but it's full.");
+                        alert_script = "<script>alert('인원 모집이 끝난 그룹입니다.')</script>"
                     } else {
                         console.log(this_writer_id, "can be invited.");
+                        alert_script = "";
                         db.query(`INSERT INTO group_member (group_id, member_id, is_leader)
                         VALUES(?, ?, ?)`, [this_group_id, this_writer_id, 0], function(error, result) {
                             if (error) throw error;

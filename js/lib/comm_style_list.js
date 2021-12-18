@@ -94,12 +94,6 @@ module.exports = {
     .reply-submit {padding:10px; font-size: 14px; background-color: #FFEE97; color: black; border: none; cursor: pointer;}
     .reply-submit-btn {width: 10%; height: 100%; float: right; text-align: right; margin: auto 0 auto 0;}
 
-    .group-reply-popup {background:#FFEC86; width:220px; height:auto; padding: 10px; position:absolute; 
-        display: none; border: 1px solid white;}
-    .group-invitation-btn {width: 100%; background: #FDD713; padding:10px; margin-bottom: 5px; cursor: pointer; border: none;}
-    .group-invitation-btn p {color: white; margin:0;}
-    .group-invitation-exit-btn {background: gray; padding:10px; cursor: pointer;}
-    .group-invitation-exit-btn p {color: white; margin:0;}
     .group-invitation-inbtn {height: 100%; background: #FDD713; padding: 15px; border: none; width: 100%; cursor: pointer; }
     `
 }
