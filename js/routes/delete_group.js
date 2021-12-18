@@ -4,7 +4,7 @@ let router = express.Router();
 let db = require('../lib/db');
 let template = require('../lib/template');
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/', (req, res) => {
     let groupId = req.body.groupId;

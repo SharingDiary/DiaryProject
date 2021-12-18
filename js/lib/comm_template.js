@@ -17,12 +17,12 @@ module.exports = {
         </head>
         <body>
             <header>
-                <h1><a href="/" style="text-decoration:none; color:black;">📝 Daily Share</a></h1>
+                <h1><a href="Base.html" style="text-decoration:none; color:black;">📝 Daily Share</a></h1>
         
                 <nav id="main_nav">
                     <a href="/new">NEW</a>
                     <a href="/group">내 그룹</a>
-                    <a class="community" href="/community">커뮤니티</a>
+                    <a class="community" href="Community.html">커뮤니티</a>
                     <a href="/create_group">그룹생성</a>
                 </nav>
         
@@ -32,52 +32,51 @@ module.exports = {
                 </nav>
             </header>
             <div id="wrapper">
-                <div class="search-group">
-                    <p>그룹 검색</p>
-                </div>
                 <div class="group-container">
                     ${list}
-                </div>
-                <div class="group-reply-popup">
-                    <div class="group-reply-popup-wrap">
-                        <div class="group-question">
-                            <p><span class="group-invitaion-name">redvelvet</span> 님을 그룹으로 초대하시겠습니까?</p>
-                        </div>
-                        <div class="group-invitation-btn">
-                            <p>초대</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </body>
         </html>        
         `
     },
-    custom_script: `
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        console.log("hi");
-        $(document).on("click", ".spread-more", function() {
-            var index = $(".spread-more").index(this); 
-            // console.log(index);
-            if($('.group-more-desc').eq(index).css('display') === 'none'){       
-                $(".group-more-desc").eq(index).show();
-            } else { 
-                $(".group-more-desc").eq(index).hide();
-            }
-        });
-        
-        // var invitation = $('.reply-profile');
-        $(document).on("click", ".reply-profile", function (event) {
-        x = event.pageX;
-        y = event.pageY; 
-        //    alert('x좌표:' +x + ', y좌표:' + y);
-        $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
-        //    console.log("whyery");
-        })
-    </script>
-    `,
-    writing: function(_id, title, people, master_name, desc, reply){
+    custom_script: function(alert_script){
+        return `
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        ${alert_script}
+        <script>
+            $(document).on("click", ".spread-more", function() {
+                var index = $(".spread-more").index(this); 
+                // console.log(index);
+                if($('.group-more-desc').eq(index).css('display') === 'none'){       
+                    $(".group-more-desc").eq(index).show();
+                } else { 
+                    $(".group-more-desc").eq(index).hide();
+                }
+            });
+            
+            // var invitation = $('.reply-profile');
+            // $(document).on("click", ".reply-profile", function (event) {
+            //     let index = event.target.getAttribute('class');
+            //     let indexArr = index.split(" ");
+            //     console.log(indexArr[2]);
+            //     x = event.pageX;
+            //     y = event.pageY; 
+            //     //    alert('x좌표:' +x + ', y좌표:' + y);
+            //     $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).show();
+            // })
+    
+            // .group-invitation-exit-btn
+            // $(document).on("click", ".group-invitation-exit-btn", function (event) {
+            //     x = event.pageX;
+            //     y = event.pageY; 
+            //     //    alert('x좌표:' +x + ', y좌표:' + y);
+            //     $(".group-reply-popup").css({"top":y, "left":x, "z-index": 100}).hide();
+            //     })
+        </script>
+        `
+    },
+    writing: function(_id, title, now_people, people, master_name, desc, reply){
         let html = `
         <div class="group-bar">
             <div class="group-desc">
@@ -85,6 +84,8 @@ module.exports = {
                     <p class="group-title">${title}</p>
                     <div class="group-people">
                         <p class="group-how-many">그룹 인원: </p>
+                        <p class="group-now-people">${now_people}</p>
+                        <p> / </p>
                         <p class="group-number-of-people">${people}</p>
                     </div>
                 </div>
@@ -113,18 +114,26 @@ module.exports = {
         </div>`
         return html;
     },
-    reply: function(writer, content) {
+    reply: function(writer, content, reply_id, post_id, writer_id) {
         let html = `
             <div class="group-reply">
                 <div class="group-reply-profile">
-                        <div class="group-profile">
-                            <div class="profile-photo reply-profile"></div>
-                            <div class="profile-name-reply">
-                                <div class="profile-nickname reply-profile"><p>${writer}</p></div>
-                                <div class="group-reply-wrap">
-                                    <p class="group-reply-inside">${content}</p>
-                                </div>
+                    <div class="group-profile">
+                        <div class="profile-photo reply-profile ${reply_id}"></div>
+                        <div class="profile-name-reply">
+                            <div class="profile-nickname reply-profile ${reply_id}">${writer}</div>
+                            <div class="group-reply-wrap">
+                                <p class="group-reply-inside">${content}</p>
+                            </div>
                         </div>
+                    </div>
+                    <div class="reply-submit-btn">
+                        <form action="/community/reply_invite_process" method="post" onsubmit="return confirm('초대하시겠습니까?');">
+                            <input type="hidden" name="reply_id" value="${reply_id}">
+                            <input type="hidden" name="post_id" value="${post_id}">
+                            <input type="hidden" name="writer_id" value="${writer_id}">
+                            <input type="submit" class="group-invitation-inbtn" value="초대">
+                        </form>
                     </div>
                 </div>
             </div>`;

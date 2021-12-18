@@ -4,7 +4,31 @@ let router = express.Router();
 let db = require('../lib/db');
 let template = require('../lib/template');
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
+const passport = require('passport');
+const session = require('express-session');
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(express.urlencoded({ extended: false }));
+router.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
+router.use(passport.initialize());
+router.use(passport.session());
+
+//serializeUser 객체는 로그인 성공시 실행되는 done(null, user);에서
+//user 객체를 전달받아 세션(정확히는 req.session.passport.user)에 저장
+passport.serializeUser((user, done) => {
+    console.log('passport session save: ', user)
+    done(null, user.id)
+});
+
+//페이지를 방문할 때 마다 이 사람이 유효한 사용자인지 체크
+passport.deserializeUser((id, done) => {
+  console.log('passport session get id: ', id) 
+    done(null, id); // 여기의 user가 req.user가 됨
+});
 
 router.get('/:groupId', (req, res) => {
     let groupId = req.params.groupId;
@@ -60,7 +84,7 @@ router.post('/update_group_process', (req, res) => {
     let description = req.body.description;
     let headcount = parseInt(req.body.headcount);
     let member = req.body.member; 
-    let userId = 'yih'
+    let userId = req.user;
 
     if(name.length < 1) {
         return res.send("<script>alert('그룹명을 입력해주세요.');history.back();</script>");
