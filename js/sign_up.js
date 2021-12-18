@@ -9,22 +9,26 @@ const bodyParser = require('body-parser');
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'slee',
-    // password: 'password!',
-    password: 'Pi603-zza14!',
+    password: 'password!',
+ // password: 'Pi603-zza14!',
     database: 'slee'
 });
 db.connect();
 
+let rightId_display = "display: none;"
+let rightPwd_display = "display: none;"
+
 router.use(bodyParser.urlencoded({extended: false}));
 
 router.get('/sign_up', function(request, response) {
-    response.send(template.HTML(style_list.nav, style_list.sign_up))
+    response.send(template.HTML(style_list.nav, style_list.sign_up(rightId_display, rightPwd_display)))
 })
 
 router.post('/sign_up_process', function(request, response) {
     let correct_pwd = false;
     let unique_id = true;
-
+    rightId_display = "display: none;"
+    rightPwd_display = "display: none;"
     db.query(`SELECT * FROM member`, function(error2, members) {
         let i = 0;
         let post = request.body;
@@ -34,6 +38,7 @@ router.post('/sign_up_process', function(request, response) {
             while(i<members.length) {
                 if (members[i].member_id === post.email) {
                     console.log('이미 가입된 아이디입니다.');
+                    rightId_display = "display: inherit"
                     unique_id = false;
                     break;
                 }
@@ -43,6 +48,7 @@ router.post('/sign_up_process', function(request, response) {
                 correct_pwd = true;
             } else {
                 console.log('비밀번호가 일치하지 않습니다.');
+                rightPwd_display = "display: inherit;"
             }
         }
 

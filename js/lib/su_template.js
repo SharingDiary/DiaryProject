@@ -40,8 +40,8 @@ module.exports = {
       </div>
       <div class="info-one">
       <b>아이디</b><input type="text" name="email" class="text-field">
+      <p class="sign-check id-check">존재하는 아이디입니다.</p>
       <!-- <a href="/sign_up_id_check"> -->
-      <input type="button" value="중복 확인" id="id-btn"><br>
       </div>
       <div class="info-one">
       <b>비밀번호</b>
@@ -50,6 +50,7 @@ module.exports = {
       <div class="info-one"></div>
       <b>비밀번호 확인</b>
       <input type="password" name="repassword" class="text-field"> <br>
+      <p class="sign-check pwd-check">비밀번호가 다릅니다.</p>
       </div>
       <input type="submit" value="Sign Up" class="sign-btn">
       

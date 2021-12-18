@@ -9,8 +9,8 @@ const router = express.Router();
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'slee',
-    // password: 'password!',
-    password: 'Pi603-zza14!',
+    password: 'password!',
+    // password: 'Pi603-zza14!',
     database: 'slee'
 });
 db.connect();
@@ -74,7 +74,7 @@ router.post('/reply_process', function(request, response) {
             console.log('댓글이 비어있습니다.');
         } else {
             db.query(`INSERT INTO recruitment_post_reply (post_id, writer_id, content, reg_date)
-            VALUES(?, ?, ?, NOW())`, [post.post_id, "love", post.reply], function(error, result) {
+            VALUES(?, ?, ?, NOW())`, [post.post_id, "id1212", post.reply], function(error, result) {
                 if (error) throw error;
                 return response.redirect('/community');
             });  
