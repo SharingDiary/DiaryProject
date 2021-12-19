@@ -1,11 +1,10 @@
-const mysql = require('mysql');
 const express = require('express');
 const app = express();
 const router = express.Router();
 const template = require('../lib/su_template.js');
 const style_list = require('../lib/su_style_list.js');
 const bodyParser = require('body-parser');
-let db = require('../lib/db');
+const db = require('../lib/db');
 
 
 let rightId_display = "display: none;"

@@ -1,14 +1,8 @@
-let express = require('express');
-let app = express();
-let fs = require('fs');
-let template = require('./lib/template.js');
-let path = require('path');
-let qs = require('querystring');
-let db = require('./lib/db.js');
+const express = require('express');
+const app = express();
+const template = require('./lib/template.js');
 const passport = require('passport');
 const session = require('express-session');
-const flash = require('express-flash');
-
 const bodyParser = require('body-parser');
 
 let groupCreateRouter = require('./routes/create_group');
@@ -26,8 +20,8 @@ let logoutRouter = require('./routes/logout');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 app.use(express.urlencoded({ extended: false }));
-app.use(flash());
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -66,7 +60,6 @@ app.use('/logout', logoutRouter);
 app.get('/', function(req, res){
     let title = '메인페이지';
     let body = '<p>셰리 서비스 소개</p>';
-    console.log(req.session);
     console.log("main: ", req.user);
 
     let html = template.HTML(template.loginNav(false), title, body);
