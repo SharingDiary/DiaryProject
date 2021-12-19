@@ -15,7 +15,7 @@ module.exports = {
 </head>
 <body>
   <header>
-    <h1>📝 Shary</h1>
+    <h1 >📝 Shary</h1>
     <nav id="main_nav">
         <a href="/new">NEW</a>
         <a href="/group">내 그룹</a>
@@ -24,7 +24,7 @@ module.exports = {
     </nav>
     <nav id="sub_nav">
         <a href="/signup">회원가입</a>
-        <a href="/login">로그인</a>
+        <a href="/signin">로그인</a>
     </nav>
 </header>
 <body>

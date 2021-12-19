@@ -31,37 +31,35 @@ passport.deserializeUser((id, done) => {
 
 
 router.get('/', function(req, res) {
-    // 나중에 writer_id 출력 대신 writer 이름 출력으로 수정 (join 해서)
-    // 로그인 했는지 안했는지
-    let title = "NEW!";
-    let diary_list = '';
-
     if(req.user === undefined){
-        return res.redirect('/signin');
+        res.redirect('/signin');
     }
-    let userId = req.user;
+    
+    var userId = req.user;
     db.query('SELECT * FROM group_member WHERE member_id =?',[userId], function(err,groups){
         if(err){
             throw err;
         }
-        let k = 0;
+        var k = 0;
         while(k<groups.length){
-            let groupId = groups[k].group_id;
+            var groupId = groups[k].group_id;
             db.query('SELECT diary_id, writer_id, diary.group_id, title, content, weather, date_format(reg_date, "%Y/%m/%d") reg_date, date_format(mod_date,"%Y/%m/%d") mod_date, diaryProject.group.name FROM diary LEFT JOIN diaryProject.group ON diary.group_id=diaryProject.group.group_id WHERE date_format(reg_date, "%Y-%m-%d") = CURDATE() AND diaryProject.group.group_id=?;', [groupId],function(error,diarys) {
                 if(error){
                     throw error;
                 }
-            
+                
+        
                 console.log(diarys);
                 //console.log(diarys.length);
         
                 // 그룹 이름도 테이블 join해서 넣기
-                //let groupName = "그룹1"
-                
-                let i = 0;
+                //var groupName = "그룹1"
+                var title = "NEW!";
+                var i = 0;
+                var diary_list = '';
                 while(i<diarys.length){
                     // weather은 null 허용
-                    let weather_icon = "x";
+                    var weather_icon = "x";
                     if (diarys[i].weather ==='sunny')
                        weather_icon = "☀️";
                     else if (diarys[i].weather ==='cloudy')
@@ -93,14 +91,19 @@ router.get('/', function(req, res) {
                     `;
                 i = i+1;
                 }
-    
+        
+                var NEW_DIARY = diary_template.NEW_DIARY(title, diary_list);
+        
+            
+                res.writeHead(200);
+                res.end(NEW_DIARY);
             });
 
             k = k + 1;
         }
-        let NEW_DIARY = diary_template.NEW_DIARY(title, diary_list);    
-        res.send(NEW_DIARY);
-    });
+    })
+    
 });
+
 
 module.exports = router;

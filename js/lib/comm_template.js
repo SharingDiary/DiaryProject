@@ -17,7 +17,7 @@ module.exports = {
         </head>
         <body>
             <header>
-                <h1><a href="Base.html" style="text-decoration:none; color:black;">📝 Daily Share</a></h1>
+                <h1><a href="/" style="text-decoration:none; color:black;">📝 Shary</a></h1>
         
                 <nav id="main_nav">
                     <a href="/new">NEW</a>
@@ -27,9 +27,9 @@ module.exports = {
                 </nav>
         
                 <nav id="sub_nav">
-                    <a href="/signup">회원가입</a>
-                    <a href="/signin">로그인</a>
-                </nav>
+                  <a href="/logout">로그아웃</a>
+                  <a href="/mypage">마이페이지</a>
+              </nav>
             </header>
             <div id="wrapper">
                 <div class="group-container">

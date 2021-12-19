@@ -3,10 +3,11 @@ const app = express();
 const router = express.Router();
 const db = require('../lib/db');
 const template = require('../lib/template');
+const group_template = require('../lib/group_template');
+const diary_template = require('../lib/diary_template');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
-const diary_template = require('../lib/diary_template');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(express.urlencoded({ extended: false }));
@@ -34,26 +35,35 @@ passport.deserializeUser((id, done) => {
 
 router.get('/', (req, res) => {
     let userId =  req.user;
-    console.log("group user: ", userId);
+    let isLogging = !(req.user === undefined)
+    // console.log("group user: ", userId);
     db.query(`SELECT * FROM diaryProject.group AS g LEFT JOIN group_member AS gm
         ON g.group_id = gm.group_id WHERE gm.member_id=?`, [userId], function(err, groups) {
             if(err) throw err;
             db.query(`SELECT * FROM group_member LEFT JOIN member ON group_member.member_id = member.member_id`, 
                 function(err2, group_members) {
-                    if(err2) throw err2;
-                    let groupList = template.groupList(userId, groups, group_members, req.baseUrl);
+                    if(err2) 
+                        throw err2;
+                    
                     let title = "내 그룹";
+                    let groupList = group_template.GROUP_LIST(userId, groups, group_members, req.baseUrl);
                     let body = `
-                    <div id="title_div">
-                        <div class="title_div_left">
-                            <h2>내 그룹</h2>
+                        <div id="title_div">
+                            <div class="title_div_left">
+                                <h2>내 그룹</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div id="groups_div">
-                        ${groupList}
-                    </div>
-                    `;
-                    let html = template.groupHTML(template.loginNav(false), title, body);
+                        <div id="groups_div">
+                            ${groupList}
+                        </div>`;
+                    let script = `
+                        <script>
+                            function moveToGroup(url) {
+                                location.href=url;
+                            }
+                        </script>`;
+
+                    let html = template.HTML(template.loginNav(isLogging), title, body, script);
                     res.send(html);
             });
     });
@@ -63,6 +73,8 @@ router.get('/myGroup/:groupId', (req, res) => {
     // 나중에 writer_id 출력 대신 writer 이름 출력으로 수정 (join 해서)
     // group 테이블하고도 join해서 해당 그룹에 맞는 일기 보여주기
     // 지금은 내 그룹으로 전체 내 그룹 합쳐서 보여주고 있음
+
+    let isLogging = !(req.user === undefined)
     let groupId = parseInt(req.params.groupId);
     let writer_id = req.user;
     db.query('SELECT diary_id, writer_id, group_id, title, content, weather, date_format(reg_date, "%Y/%m/%d") reg_date, date_format(mod_Date,"%Y/%m/%d") mod_date FROM diary WHERE group_id=?',[groupId], function(error,diarys) {
@@ -82,7 +94,13 @@ router.get('/myGroup/:groupId', (req, res) => {
             let groupName = result[0].name;
             
             let i = 0;
-            let diary_list = '';
+            let body = `
+                <div id="title_div">
+                <div class="title_div_left">
+                    <h2>${groupName}</h2>
+                </div>
+                </div>`;
+
             while(i<diarys.length){
                 // weather은 null 허용
                 let weather_icon = "x";
@@ -97,7 +115,8 @@ router.get('/myGroup/:groupId', (req, res) => {
                 else if(diarys[i].weather === 'snowy')
                     weather_icon = "🌨";
                 
-                diary_list += `<div id="diary_div">
+                    body += `
+                <div id="diary_div">
                 <div id="diary_top_div">
                     <div class="diary_top_div_left">
                         <img>
@@ -110,7 +129,7 @@ router.get('/myGroup/:groupId', (req, res) => {
                     <div class="diary_top_div_right">`;
 
                     if(writer_id === diarys[i].writer_id) {
-                        diary_list += 
+                        body += 
                         `<div class="div_btn_float_right">
                         <form method="post" action="/create_diary/delete_diary_process">
                             <input type="hidden" name="diary_id" value="${diarys[i].diary_id}">
@@ -123,19 +142,26 @@ router.get('/myGroup/:groupId', (req, res) => {
                         `
                     }
                     
-                    diary_list += `</div> 
+                    body += `</div> 
+                        </div>
+                    <div id="diary_middle_div">
+                        <h4>${diarys[i].title}</h4>
+                        <h5>${diarys[i].content}</h5>
                     </div>
-                <div id="diary_middle_div">
-                    <h4>${diarys[i].title}</h4>
-                    <h5>${diarys[i].content}</h5>
-                </div>
-            </div>`
+                </div>`
             i = i+1;
         }
 
-        let MYGROUP = diary_template.MYGROUP(title,groupName,diary_list,groupId);
+        body += `
+            <div id="bottom_div">
+                <button onclick="location.href='/create_diary/${groupId}';">
+                        +
+                </button>
+            </div>`;
 
-        res.send(MYGROUP);
+        let html = template.HTML(template.loginNav(isLogging), title, body, '');
+
+        res.send(html);
 
         });
     });

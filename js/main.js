@@ -4,6 +4,7 @@ const template = require('./lib/template.js');
 const passport = require('passport');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 let groupCreateRouter = require('./routes/create_group');
 let groupUpdateRouter = require('./routes/update_group');
@@ -19,8 +20,6 @@ let newDiaryRouter = require('./routes/new');
 let logoutRouter = require('./routes/logout');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
-
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
   secret: 'secret',
@@ -30,6 +29,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, '../public')));
+
 
 //serializeUser 객체는 로그인 성공시 실행되는 done(null, user);에서
 //user 객체를 전달받아 세션(정확히는 req.session.passport.user)에 저장
@@ -62,7 +63,7 @@ app.get('/', function(req, res){
     let body = '<p>셰리 서비스 소개</p>';
     console.log("main: ", req.user);
 
-    let html = template.HTML(template.loginNav(false), title, body);
+    let html = template.HTML(template.loginNav(!(req.user === undefined)), title, body, '');
     res.send(html);
 });
 

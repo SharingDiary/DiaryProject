@@ -7,8 +7,8 @@ const template = require('../lib/template');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
-router.use(bodyParser.urlencoded({ extended: false }));
 
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(express.urlencoded({ extended: false }));
 router.use(session({
   secret: 'secret',
@@ -35,8 +35,55 @@ router.get('/', (req, res) => {
     if(req.user === undefined) {
         return res.send("<script>alert('로그인이 필요합니다.');history.back();</script>");
     }
+
+    let isLogging = !(req.user === undefined);
     let title = '그룹 생성';
-    let html = template.createGroupHTML(template.loginNav(false), title, req.baseUrl);
+    let body = `
+        <h2 id="title">${title}</h2>
+            <form action="/create_group/create_group_process" method="post">
+                <div id="input_group_name">
+                    <h3>그룹명</h3>
+                    <input type="text" name="name" placeholder="그룹명을 입력해주세요.">
+                </div>
+
+                <div id="input_group_description">
+                    <h3>그룹 설명</h3>
+                    <textarea name="description" placeholder="그룹 설명을 입력해주세요."></textarea>
+                </div>
+
+                <div id="input_headcount">
+                    <h3>희망인원수</h3>
+                    <input type="text" name="headcount" placeholder="희망인원수를 입력해주세요.">
+                </div>
+
+                <div id="group_member">
+                    <h3>그룹원</h3>
+                    <textarea name="member" placeholder="그룹원 콤마(,)로 연결"></textarea>
+                    <input type="button" id="invitation" value="초대" onclick="searchId();">
+                </div>
+
+                <div id="member_recruitment">
+                    <h3>커뮤니티에서 그룹 구하기<span>
+                        <input type="checkbox" name="recruitment" id="recruitment" value = 1>
+                        <input type="hidden" name="recruitment" value=0 id="recruitment_hidden"/>
+                    </h3>
+                    
+                </div>
+
+                <div id="submit_div">
+                    <input type="submit" value="완료">
+                </div>
+                
+            </form>`;
+
+    let script=`
+        <script>
+            function searchId(){
+                window.open("/searchId","아이디 찾기","width=400, height=300, top=10, left=10");
+            }
+        </script>`;
+
+    let html = template.HTML(template.loginNav(isLogging), title, body, script);
     res.send(html);
 });
 
@@ -114,10 +161,11 @@ router.post('/create_group_process', async (req, res) => {
 });
 
 router.get('/recruitment_post_create/:groupId', (req, res) => {
+    let isLogging = !(req.user === undefined);
     let groupId = req.params.groupId;
     let title = '그룹원 모집글 생성';
     let body = `<h2 id="title">그룹원 모집글 작성</h2>
-                <form action="${req.baseUrl}/create_recruitment_post_process" method="post">
+                <form action="/create_group/create_recruitment_post_process" method="post">
                     <input type="hidden" name="groupId" value="${groupId}">
 
                     <div id="input_title">
@@ -133,9 +181,8 @@ router.get('/recruitment_post_create/:groupId', (req, res) => {
                     <div id="submit_div">
                         <input type="submit" value="완료">
                     </div>
-                    
                 </form>`;
-    let html = template.HTML(template.loginNav(false), title, body);
+    let html = template.HTML(template.loginNav(isLogging), title, body, '');
     res.send(html);
 });
 

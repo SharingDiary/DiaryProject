@@ -34,13 +34,15 @@ router.get('/:groupId', (req, res) => {
     if(req.user === undefined) {
         return res.send("<script>alert('로그인이 필요합니다.');history.back();</script>");
     }
+    
     let groupId = req.params.groupId;
     db.query(`SELECT * FROM diaryProject.group WHERE group_id=?`, [groupId], function(err, group) {
         db.query(`SELECT * FROM group_member WHERE group_id=?`, [groupId], function(err2, member) {
             if (err) throw err;
             let title = '그룹 수정';
             let body = `
-                <form action="${req.baseUrl}/update_group_process" method="post">
+                <h2 id="title">${title}</h2>    
+                <form action="update_group/update_group_process" method="post">
                     <input type="hidden" name="groupId" value="${groupId}">
                     <div id="input_group_name">
                         <h3>그룹명</h3>
@@ -72,8 +74,14 @@ router.get('/:groupId', (req, res) => {
                 <div id="submit_div">
                     <input type="submit" value="완료">
                 </div>
-            </form>`;
-            let html = template.updateGroupHTML(template.loginNav(false), title, body);
+                </form>`;
+            let script = `
+                <script>
+                    function searchId(){
+                        window.open("/searchId","아이디 찾기","width=400, height=300, top=10, left=10");
+                    }
+                </script>`;
+            let html = template.HTML(template.loginNav(true), title, body, script);
             res.send(html); 
         });
         
