@@ -26,10 +26,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-
+app.use(express.static('images'));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, '../public')));
 
 
 //serializeUser 객체는 로그인 성공시 실행되는 done(null, user);에서
@@ -60,7 +59,7 @@ app.use('/logout', logoutRouter);
 
 app.get('/', function(req, res){
     let title = '메인페이지';
-    let body = '<p>셰리 서비스 소개</p>';
+    let body = '<img src="/shary.png" style="width: 800px; display:block; margin-top:10px;">';
     console.log("main: ", req.user);
 
     let html = template.HTML(template.loginNav(!(req.user === undefined)), title, body, '');

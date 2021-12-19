@@ -21,6 +21,14 @@ module.exports = {
             font-weight: bold;
         }
 
+        #logo{
+            width: 300px;
+            margin-left: 20px;
+            color: #000;
+            font-size: xx-large;
+            text-decoration: none;
+        }
+
         header h1{
             width: 300px;
             margin-left: 20px;
@@ -215,7 +223,7 @@ module.exports = {
 </head>
 <body>
     <header>
-        <h1>📝 Shary</h1>
+        <a href="/" id="logo">📝 Shary</a>
 
         <nav id="main_nav">
             <a href="/new">NEW</a>
@@ -283,6 +291,14 @@ module.exports = {
             align-items: center;
             background: #FFEC86;
             font-weight: bold;
+        }
+
+        #logo{
+            width: 300px;
+            margin-left: 20px;
+            color: #000;
+            font-size: xx-large;
+            text-decoration: none;
         }
 
         header h1{
@@ -573,7 +589,7 @@ module.exports = {
 </head>
 <body>
     <header>
-        <h1>📝 Shary</h1>
+        <a href="/" id="logo">📝 Shary</a>
 
         <nav id="main_nav">
             <a href="/new">NEW</a>
@@ -641,6 +657,14 @@ module.exports = {
                 header h1{
                     width: 300px;
                     margin-left: 20px;
+                }
+
+                #logo{
+                    width: 300px;
+                    margin-left: 20px;
+                    color: #000;
+                    font-size: xx-large;
+                    text-decoration: none;
                 }
         
                 #main_nav{
@@ -832,7 +856,7 @@ module.exports = {
         </head>
         <body>
             <header>
-                <h1>📝 Shary</h1>
+                <a href="/" id="logo">📝 Shary</a>
         
                 <nav id="main_nav">
                     <a href="/new">NEW</a>
@@ -917,6 +941,14 @@ module.exports = {
             margin-left: 20px;
         }
 
+        #logo{
+            width: 300px;
+            margin-left: 20px;
+            color: #000;
+            font-size: xx-large;
+            text-decoration: none;
+        }
+
         #main_nav{
             width: 600px;
             display: flex;
@@ -973,7 +1005,7 @@ module.exports = {
 </head>
 <body>
     <header>
-        <h1>📝 Shary</h1>
+        <a href="/" id="logo">📝 Shary</a>
 
         <nav id="main_nav">
             <a href="/new">NEW</a>

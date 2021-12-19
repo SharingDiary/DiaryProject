@@ -866,13 +866,20 @@ module.exports = {
       <meta name="author" content="">
       <title>Shary</title>
       <style>
+      #logo{
+        width: 300px;
+        margin-left: 20px;
+        color: #000;
+        font-size: xx-large;
+        text-decoration: none;
+        }
       ${nav_style}
       ${log_style}
       </style>
     </head>
     <body>
       <header>
-        <h1>📝 Shary</h1>
+        <a href="/" id="logo">📝 Shary</a>
         <nav id="main_nav">
             <a href="/new">NEW</a>
             <a href="/group">내 그룹</a>
@@ -916,14 +923,21 @@ module.exports = {
           <title>Shary</title>
       
           <style>
-              ${nav_style}
-              ${my_style}  
+            #logo{
+                width: 300px;
+                margin-left: 20px;
+                color: #000;
+                font-size: xx-large;
+                text-decoration: none;
+            }
+            ${nav_style}
+            ${my_style}  
           </style>
       
       </head>
       <body>
           <header>
-              <h1>📝 Shary</h1>
+              <a href="/" id="logo">📝 Shary</a>
       
               <nav id="main_nav">
                   <a href="/new">NEW</a>
