@@ -225,7 +225,7 @@ module.exports = {
                         font-weight: bold;
                         border: 0;
                         position: fixed;
-                        right: 350px;
+                        right: 250px;
                         bottom: 0px;
                         float: right;
                     }

@@ -55,6 +55,11 @@ router.get('/', (req, res) => {
                         </div>
                         <div id="groups_div">
                             ${groupList}
+                        </div>
+                        <div id="bottom_div">
+                            <button onclick="location.href='/create_group';">
+                                +
+                            </button>
                         </div>`;
                     let script = `
                         <script>
