@@ -784,7 +784,7 @@ module.exports = {
         ${baseStyle(title, '')}
         <body>
             <header>
-                <a href="/" id="logo">📝 Daily Share</a>
+                <a href="/" id="logo">📝 Shary</a>
 
                 <nav id="main_nav">
                     <a href="/new">NEW</a>
