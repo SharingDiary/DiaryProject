@@ -45,13 +45,13 @@ router.get('/', function(req, res) {
         //console.log(diarys.length);
 
         // 그룹 이름도 테이블 join해서 넣기
-        //var groupName = "그룹1"
+        //let groupName = "그룹1"
         let title = "NEW!";
         let i = 0;
         let diary_list = '';
         while(i<diarys.length){
             // weather은 null 허용
-            var weather_icon = "x";
+            let weather_icon = "x";
             if (diarys[i].weather ==='sunny')
                weather_icon = "☀️";
             else if (diarys[i].weather ==='cloudy')

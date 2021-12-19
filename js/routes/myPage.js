@@ -35,7 +35,7 @@ passport.deserializeUser((id, done) => {
 
 //my_HTML:function(nav_style, my_style, my_nickname_HTML, my_diary_HTML)
 router.get('/', function(req, res) {
-    var my_id = req.user;
+    let my_id = req.user;
 
     db.query(`SELECT * FROM diaryProject.member where member_id = ?`, [req.user], function (error, rows) {
         if (error) return error;
