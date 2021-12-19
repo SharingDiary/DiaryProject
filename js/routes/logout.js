@@ -35,7 +35,7 @@ console.log('passport session get id: ', id)
 router.get('/', (req, res) => {
     req.session.destroy(() => {
       res.clearCookie('connect.sid');
-      res.redirect('/signin');
+      res.redirect('/');
   });
 });
 

@@ -2,15 +2,36 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const passport = require('passport');
+const session = require('express-session');
 const flash = require('express-flash');
 const bodyParser = require('body-parser');
 const db = require('../lib/db');
-router.use(bodyParser.urlencoded({ extended: false }));
 
 const template = require('../lib/template.js');
 const style = require('../lib/style.js');
 const my_template = require('../lib/my_template.js');
 
+
+router.use(bodyParser.urlencoded({ extended: false }));
+
+//session과 passport를 사용하겠다고 선언함.
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(express.urlencoded({ extended: false }));
+router.use(flash());
+router.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+//페이지를 방문할 때 마다 이 사람이 유효한 사용자인지 체크
+passport.deserializeUser((id, done) => {
+  console.log('passport session get id: ', id) 
+    done(null, id); // 여기의 user가 req.user가 됨
+});
 
 //my_HTML:function(nav_style, my_style, my_nickname_HTML, my_diary_HTML)
 router.get('/', function(req, res) {
@@ -29,7 +50,7 @@ router.get('/', function(req, res) {
                 i += 1;
             }
             alld = alld + '</div></div>';
-            return res.send(template.my_HTML(style.nav, style.my, my_template.my_nickname_HTML(my_id, rows[0].nickname), alld));
+            return res.send(template.my_HTML(style.nav, style.my, my_template.my_nickname_HTML(my_id, rows[0].nickname, req.baseUrl), alld));
         });
     });
 });
