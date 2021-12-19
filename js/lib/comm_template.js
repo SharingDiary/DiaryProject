@@ -1,5 +1,5 @@
 module.exports = {
-    HTML: function(nav_style, community_style, script, list){
+    HTML: function(nav_style, community_style, script, list, isLoggedin){
         return `<!DOCTYPE html>
         <html lang="kr">
         <head>
@@ -22,14 +22,11 @@ module.exports = {
                 <nav id="main_nav">
                     <a href="/new">NEW</a>
                     <a href="/group">내 그룹</a>
-                    <a class="community" href="Community.html">커뮤니티</a>
+                    <a class="community" href="/community">커뮤니티</a>
                     <a href="/create_group">그룹생성</a>
                 </nav>
         
-                <nav id="sub_nav">
-                  <a href="/logout">로그아웃</a>
-                  <a href="/mypage">마이페이지</a>
-              </nav>
+                ${isLoggedin}
             </header>
             <div id="wrapper">
                 <div class="group-container">
