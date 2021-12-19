@@ -16,16 +16,15 @@ const my_template = require('../lib/my_template.js');
 router.get('/', function(req, res) {
     var my_id = req.user;
 
-    db.query(`SELECT * FROM member where member_id = ?`, [req.user], function (error, rows) {
+    db.query(`SELECT * FROM diaryProject.member where member_id = ?`, [req.user], function (error, rows) {
         if (error) return error;
         //console.log(rows[0].nickname);
         my_nick = rows[0].nickname;
-        db.query('SELECT * FROM diary where writer_id = ?', [req.user], function (error2, dlist) {
+        db.query('SELECT date_format(mod_date,"%Y/%m/%d") mod_date, title, content FROM diary where writer_id = ?', [req.user], function (error2, dlist) {
             if (error2) return error2;
             let alld = '<div><h2 style="margin-left: 40px;">내가 쓴 일기</h2><div id="mydiary_wrapper">';
             let i = 0;
             while (i < dlist.length) {
-                // my_diary_list: function(date, title, body){
                 alld = alld + my_template.my_diary_list(dlist[i].mod_date, dlist[i].title, dlist[i].content, req.baseUrl);
                 i += 1;
             }
@@ -38,7 +37,7 @@ router.get('/', function(req, res) {
 router.post('/modify_nick', function (req, res) {
     let post = req.body;
     console.log(post.nickname);
-    db.query(`UPDATE member.member SET nickname = ? WHERE member_id = ?`, [post.nickname, req.user], function (error2, rows) {
+    db.query(`UPDATE diaryProject.member SET nickname = ? WHERE member_id = ?`, [post.nickname, req.user], function (error2, rows) {
         if (error2) { console.log("변경실패"); return error2; }
         console.log(rows[0]);
         console.log("변경완료")

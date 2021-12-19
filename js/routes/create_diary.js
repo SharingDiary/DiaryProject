@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var template = require('../lib/template.js');
-var diary_template = require('../lib/diary_template.js');
-var db = require('../lib/db.js');
+let express = require('express');
+let router = express.Router();
+let template = require('../lib/template.js');
+let diary_template = require('../lib/diary_template.js');
+let db = require('../lib/db.js');
 const passport = require('passport');
 const session = require('express-session');
 
@@ -30,12 +30,12 @@ passport.deserializeUser((id, done) => {
 
 router.get('/:groupId', function(req, res) {
     // diary_id 증가 시키기
-    var title = "일기 쓰기";
-    var writer_id = req.user;
-    //var group_id = 50;
-    var group_id = req.params.groupId;
+    let title = "일기 쓰기";
+    let writer_id = req.user;
+    //let group_id = 50;
+    let group_id = req.params.groupId;
 
-    var body = `
+    let body = `
         <div id="wrapper">
         <h2 id="title">일기 작성</h2>
         <form action="/create_diary/create_diary_process" method="post">
@@ -69,18 +69,18 @@ router.get('/:groupId', function(req, res) {
     </div>
     `
 
-    var diary_register = diary_template.REGISTER(title, body);
+    let diary_register = diary_template.REGISTER(title, body);
 
     return res.send(diary_register);
 });
 
 router.post('/create_diary_process', function(req, res) {
-    var group_id = req.body.group_id;
-    var writer_id = req.body.writer_id;
-    var diary_id = req.body.diary_id;
-    var title = req.body.title;
-    var content = req.body.content;
-    var weather = req.body.weather;
+    let group_id = req.body.group_id;
+    let writer_id = req.body.writer_id;
+    let diary_id = req.body.diary_id;
+    let title = req.body.title;
+    let content = req.body.content;
+    let weather = req.body.weather;
     console.log("title:" + title);
     console.log("diary_id" + diary_id);
     console.log("group_id" + group_id);
@@ -99,10 +99,10 @@ router.post('/create_diary_process', function(req, res) {
 });
 
 router.get('/modify/:postId', function(req, res) {
-    var title = "일기 수정";
-    //var _url = request.url;
-    //var queryData = url.parse(_url, true).query;
-    var diary_id = req.params.postId;
+    let title = "일기 수정";
+    //let _url = request.url;
+    //let queryData = url.parse(_url, true).query;
+    let diary_id = req.params.postId;
     let writer_id = req.user;
 
     // '만약 현재 로그인한 유저가 작성자이면' 추가
@@ -117,7 +117,7 @@ router.get('/modify/:postId', function(req, res) {
                 throw err2;
             }
 
-            var update_diary = diary_template.DIARY_UPATE(title,`
+            let update_diary = diary_template.DIARY_UPATE(title,`
             <form action="/create_diary/diary_modify_process" method="post">
             <div id="top_div">
                 <div class="top_div_left">
@@ -154,12 +154,12 @@ router.get('/modify/:postId', function(req, res) {
 });
 
 router.post('/diary_modify_process', function(req, res) {
-    var group_id = req.body.group_id;
-    var writer_id = req.body.writer_id;
-    var diary_id = req.body.diary_id;
-    var title = req.body.title;
-    var content = req.body.content;
-    var weather = req.body.weather;
+    let group_id = req.body.group_id;
+    let writer_id = req.body.writer_id;
+    let diary_id = req.body.diary_id;
+    let title = req.body.title;
+    let content = req.body.content;
+    let weather = req.body.weather;
     console.log("title:" + title);
     console.log("diary_id" + diary_id);
     console.log("group_id" + group_id);
@@ -177,12 +177,12 @@ router.post('/diary_modify_process', function(req, res) {
 });
 
 router.post('/delete_diary_process', function(req, res) {
-    var group_id = req.body.group_id;
-    var writer_id = req.body.writer_id;
-    var diary_id = req.body.diary_id;
-    var title = req.body.title;
-    var content = req.body.content;
-    var weather = req.body.weather;
+    let group_id = req.body.group_id;
+    let writer_id = req.body.writer_id;
+    let diary_id = req.body.diary_id;
+    let title = req.body.title;
+    let content = req.body.content;
+    let weather = req.body.weather;
     console.log("title:" + title);
     console.log("diary_id" + diary_id);
     console.log("group_id" + group_id);

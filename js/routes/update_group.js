@@ -31,6 +31,9 @@ passport.deserializeUser((id, done) => {
 });
 
 router.get('/:groupId', (req, res) => {
+    if(req.user === undefined) {
+        return res.send("<script>alert('로그인이 필요합니다.');history.back();</script>");
+    }
     let groupId = req.params.groupId;
     db.query(`SELECT * FROM diaryProject.group WHERE group_id=?`, [groupId], function(err, group) {
         db.query(`SELECT * FROM group_member WHERE group_id=?`, [groupId], function(err2, member) {
@@ -84,7 +87,6 @@ router.post('/update_group_process', (req, res) => {
     let description = req.body.description;
     let headcount = parseInt(req.body.headcount);
     let member = req.body.member; 
-    let userId = req.user;
 
     if(name.length < 1) {
         return res.send("<script>alert('그룹명을 입력해주세요.');history.back();</script>");

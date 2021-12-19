@@ -46,7 +46,7 @@ module.exports = {
         ${alert_script}
         <script>
             $(document).on("click", ".spread-more", function() {
-                var index = $(".spread-more").index(this); 
+                let index = $(".spread-more").index(this); 
                 // console.log(index);
                 if($('.group-more-desc').eq(index).css('display') === 'none'){       
                     $(".group-more-desc").eq(index).show();
@@ -55,7 +55,7 @@ module.exports = {
                 }
             });
             
-            // var invitation = $('.reply-profile');
+            // let invitation = $('.reply-profile');
             // $(document).on("click", ".reply-profile", function (event) {
             //     let index = event.target.getAttribute('class');
             //     let indexArr = index.split(" ");

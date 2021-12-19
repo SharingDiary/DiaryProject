@@ -32,12 +32,18 @@ passport.deserializeUser((id, done) => {
   });
 
 router.get('/', (req, res) => {
+    if(req.user === undefined) {
+        return res.send("<script>alert('로그인이 필요합니다.');history.back();</script>");
+    }
     let title = '그룹 생성';
     let html = template.createGroupHTML(template.loginNav(false), title, req.baseUrl);
     res.send(html);
 });
 
 router.post('/create_group_process', async (req, res) => {
+    if(req.user === undefined) {
+        return res.send("<script>alert('로그인이 필요합니다.');history.back();</script>");
+    }
     let name = req.body.name;
     let description = req.body.description;
     let headcount = parseInt(req.body.headcount);

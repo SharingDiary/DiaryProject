@@ -1,5 +1,5 @@
 $(document).on("click", ".spread-more", function() {
-    var index = $(".spread-more").index(this); 
+    let index = $(".spread-more").index(this); 
     // console.log(index);
     if($('.group-more-desc').eq(index).css('display') === 'none'){       
         $(".group-more-desc").eq(index).show();
@@ -10,7 +10,7 @@ $(document).on("click", ".spread-more", function() {
 
 console.log("dpd");
 
-// var invitation = $('.reply-profile');
+// let invitation = $('.reply-profile');
 $(document).on("click", ".reply-profile", function (event) {
    x = event.pageX;
    y = event.pageY; 

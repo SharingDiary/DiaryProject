@@ -1,9 +1,9 @@
-var express = require('express');
-var app = express();
-var fs = require('fs');
-var template = require('./lib/template.js');
-var path = require('path');
-var qs = require('querystring');
+let express = require('express');
+let app = express();
+let fs = require('fs');
+let template = require('./lib/template.js');
+let path = require('path');
+let qs = require('querystring');
 let db = require('./lib/db.js');
 const passport = require('passport');
 const session = require('express-session');
@@ -22,6 +22,7 @@ let signInRouter = require('./routes/sign_in');
 let myPageRouter = require('./routes/myPage');
 let diaryCreateRouter = require('./routes/create_diary');
 let newDiaryRouter = require('./routes/new');
+let logoutRouter = require('./routes/logout');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -49,7 +50,6 @@ passport.deserializeUser((id, done) => {
     done(null, id); // 여기의 user가 req.user가 됨
 });
 
-
 app.use('/group', groupRouter); // group으로 시작하는 주소는 내 그룹 화면
 app.use('/create_group', groupCreateRouter); // create_group으로 시작하는 주소는 그룹 생성과 관련 
 app.use('/update_group', groupUpdateRouter); // update_group으로 시작하는 주소는 그룹 수정과 관련
@@ -61,14 +61,15 @@ app.use('/signin', signInRouter); //signin로 시작하는 주소는 로그인
 app.use('/mypage', myPageRouter); //myPage로 시작하는 주소는 마이페이지
 app.use('/create_diary', diaryCreateRouter); //create diary 작성
 app.use('/new', newDiaryRouter); //create diary 작성
+app.use('/logout', logoutRouter);
 
 app.get('/', function(req, res){
-    var title = '메인페이지';
-    var body = '<p>셰리 서비스 소개</p>';
+    let title = '메인페이지';
+    let body = '<p>셰리 서비스 소개</p>';
     console.log(req.session);
     console.log("main: ", req.user);
 
-    var html = template.HTML(template.loginNav(false), title, body);
+    let html = template.HTML(template.loginNav(false), title, body);
     res.send(html);
 });
 

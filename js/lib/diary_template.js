@@ -232,7 +232,7 @@ module.exports = {
 
         ${body}
         <script>
-            var checkedWeather = "sunny";
+            let checkedWeather = "sunny";
 
             window.onload = function(){
                 checkOn(checkedWeather);
@@ -860,7 +860,7 @@ module.exports = {
         
             </body>
         <script>
-            var checkedWeather = "sunny";
+            let checkedWeather = "sunny";
         
             window.onload = function(){
                 checkOn(checkedWeather);

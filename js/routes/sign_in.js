@@ -29,7 +29,7 @@ router.use(passport.session());
 /*
 router.get('/', function(req, res) {
   console.log('/', req.user);
-  var def = '비회원 | <a href="/login">login</a>';
+  let def = '비회원 | <a href="/login">login</a>';
   if(req.user !== undefined){
     console.log(req.session);
     def = req.user + `님 | <a href="/logout">logout</a>
