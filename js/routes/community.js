@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const template = require('../lib/comm_template');
+const main_template = require('../lib/template');
 const style_list = require('../lib/comm_style_list');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -35,6 +36,7 @@ let alert_script = "";
 
 router.get('/', function(request, response) {
     let writing_list = "";
+    let isLogging = !(request.user === undefined)
     db.query(`SELECT * FROM recruitment_post`, function(error, posts) {
         if (error) throw error;
         db.query(`SELECT * FROM recruitment_post LEFT JOIN diaryProject.group AS g ON recruitment_post.group_id = g.group_id`, function(error2, groups) {
@@ -70,7 +72,7 @@ router.get('/', function(request, response) {
                         writing_list = writing_list + template.writing(_id, title, now_people, people, group_master, desc, reply);
                         i++;
                     }
-                    response.send(template.HTML(style_list.nav, style_list.community, template.custom_script(alert_script), writing_list))
+                    response.send(template.HTML(style_list.nav, style_list.community, template.custom_script(alert_script), writing_list, main_template.loginNav(isLogging)))
                     alert_script = "";
                 });
             });
